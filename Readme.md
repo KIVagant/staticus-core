@@ -1,6 +1,6 @@
 # Staticus Core
 
-This is a core-part of the Staticus project.
+This is a core-part of the [Staticus project](https://github.com/KIVagant/staticus).
 
 Look to the parent repository for more information.
 
