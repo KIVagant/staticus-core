@@ -3,12 +3,24 @@ namespace Staticus\Middlewares;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Staticus\Config\ConfigInterface;
+use Staticus\Config\Config;
 use Staticus\Exceptions\ExceptionCodes;
 use Staticus\Exceptions\WrongRequestException;
 use Zend\Diactoros\Response\JsonResponse;
 
 class ErrorHandler
 {
+    /**
+     * @var ConfigInterface|Config
+     */
+    private $config;
+
+    public function __construct(ConfigInterface $config)
+    {
+        $this->config = $config;
+    }
+
     public function __invoke($error, Request $request, Response $response, callable $next)
     {
         /*
@@ -27,8 +39,7 @@ class ErrorHandler
                     ExceptionCodes::code($className) . '.' . $error->getCode());
             } else {
 
-                // @TODO: config value must be used here instead of env()
-                $message = env('ERROR_HANDLER')
+                $message = $this->config->get('error_handler', false)
                     ? $error->getMessage()
                     : 'Internal error';
 
