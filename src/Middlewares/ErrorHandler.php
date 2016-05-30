@@ -44,7 +44,7 @@ class ErrorHandler
                     : 'Internal error';
 
                 /** @see \Zend\Diactoros\Response::$phrases */
-                return $this->response(503, $message, ExceptionCodes::code($className) . '.' . $error->getCode());
+                return $this->response(503, $message, $error->getCode() . '.' . ExceptionCodes::code($className) . '.' . $error->getLine());
             }
         } else {
             $next($request, $response, $next);
