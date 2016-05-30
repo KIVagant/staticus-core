@@ -69,14 +69,14 @@ abstract class ImagePostProcessingMiddlewareAbstract extends MiddlewareAbstract
     protected function createDirectory($directory)
     {
         if (!$this->filesystem->createDir($directory)) {
-            throw new SaveResourceErrorException('Can\'t create a directory: ' . $directory, __LINE__);
+            throw new SaveResourceErrorException('Can\'t create a directory: ' . $directory);
         }
     }
 
     protected function getImagick($sourcePath)
     {
         if (!class_exists(\Imagick::class)) {
-            throw new SaveResourceErrorException('Imagick is not installed', __LINE__);
+            throw new SaveResourceErrorException('Imagick is not installed');
         }
 
         return new \Imagick(realpath($sourcePath));

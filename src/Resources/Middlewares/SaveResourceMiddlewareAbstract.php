@@ -60,7 +60,7 @@ abstract class SaveResourceMiddlewareAbstract extends MiddlewareAbstract
             $resourceDO = $this->resourceDO;
             $filePath = $resourceDO->getFilePath();
             if (empty($filePath)) {
-                throw new WrongResponseException('Empty file path. File can\'t be saved.', __LINE__);
+                throw new WrongResponseException('Empty file path. File can\'t be saved.');
             }
             $resourceStream = $response->getResource();
             if (is_resource($resourceStream)) {
@@ -68,7 +68,7 @@ abstract class SaveResourceMiddlewareAbstract extends MiddlewareAbstract
             } else {
                 $body = $response->getContent();
                 if (!$body) {
-                    throw new WrongResponseException('Empty body for generated file. Request: ' . $resourceDO->getName(), __LINE__);
+                    throw new WrongResponseException('Empty body for generated file. Request: ' . $resourceDO->getName());
                 }
                 $this->save($resourceDO, $body);
             }
@@ -93,7 +93,7 @@ abstract class SaveResourceMiddlewareAbstract extends MiddlewareAbstract
             $result = $this->filesystem->put($filePath, $content);
         }
         if (!$result) {
-            throw new SaveResourceErrorException('File cannot be written to the path ' . $filePath, __LINE__);
+            throw new SaveResourceErrorException('File cannot be written to the path ' . $filePath);
         }
     }
 
@@ -101,7 +101,7 @@ abstract class SaveResourceMiddlewareAbstract extends MiddlewareAbstract
     {
         $uri = $content->getStream()->getMetadata('uri');
         if (!$uri) {
-            throw new SaveResourceErrorException('Unknown error: can\'t get uploaded file uri', __LINE__);
+            throw new SaveResourceErrorException('Unknown error: can\'t get uploaded file uri');
         }
         $uploadedMime = $this->filesystem->getMimetype($uri);
         if ($mime !== $uploadedMime) {
@@ -110,7 +110,7 @@ abstract class SaveResourceMiddlewareAbstract extends MiddlewareAbstract
              * @see \Staticus\Middlewares\ActionPostAbstract::download
              */
             $this->filesystem->delete($uri);
-            throw new WrongRequestException('Bad request: incorrect mime-type of the uploaded file', __LINE__);
+            throw new WrongRequestException('Bad request: incorrect mime-type of the uploaded file');
         }
         $content->moveTo($filePath);
     }
@@ -130,7 +130,7 @@ abstract class SaveResourceMiddlewareAbstract extends MiddlewareAbstract
     protected function createDirectory($directory)
     {
         if (!$this->filesystem->createDir($directory)) {
-            throw new SaveResourceErrorException('Can\'t create a directory: ' . $directory, __LINE__);
+            throw new SaveResourceErrorException('Can\'t create a directory: ' . $directory);
         }
     }
 

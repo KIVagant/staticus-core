@@ -32,7 +32,7 @@ class CopyResourceCommand implements ResourceCommandInterface
         $originPath = $this->originResourceDO->getFilePath();
         $newPath = $this->newResourceDO->getFilePath();
         if (!$this->filesystem->has($originPath)) {
-            throw new CommandErrorException('Origin file is not exists: ' . $originPath, __LINE__);
+            throw new CommandErrorException('Origin file is not exists: ' . $originPath);
         }
         if (!$this->filesystem->has($newPath)) {
             $this->copyFile($originPath, $newPath);
@@ -47,14 +47,14 @@ class CopyResourceCommand implements ResourceCommandInterface
     {
         $this->createDirectory(dirname($toFullPath));
         if (!$this->filesystem->copy($fromFullPath, $toFullPath)) {
-            throw new CommandErrorException('File cannot be copied to the default path ' . $toFullPath, __LINE__);
+            throw new CommandErrorException('File cannot be copied to the default path ' . $toFullPath);
         }
     }
 
     protected function createDirectory($directory)
     {
         if (!$this->filesystem->createDir($directory)) {
-            throw new CommandErrorException('Can\'t create a directory: ' . $directory, __LINE__);
+            throw new CommandErrorException('Can\'t create a directory: ' . $directory);
         }
     }
 }

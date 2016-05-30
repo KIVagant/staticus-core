@@ -47,7 +47,7 @@ class User implements UserInterface
     public function login($userId, array $roles)
     {
         if (!$userId) {
-            throw new Exceptions\RuntimeException('User Id cannot be empty', __LINE__);
+            throw new Exceptions\RuntimeException('User Id cannot be empty');
         }
         $this->id = $userId;
         $this->addRoles($roles);

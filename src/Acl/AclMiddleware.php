@@ -103,8 +103,7 @@ class AclMiddleware implements MiddlewareInterface
 
             // something like PrepareResourceMiddleware should be called before this
             throw new WrongRequestException(
-                'Unsupported type of the response for ACL. Resource preparing layer must be called before this.',
-                __LINE__);
+                'Unsupported type of the response for ACL. Resource preparing layer must be called before this.');
         }
     }
 
@@ -140,9 +139,7 @@ class AclMiddleware implements MiddlewareInterface
                 $action = Actions::ACTION_DELETE;
                 break;
             default:
-                throw new WrongRequestException(
-                    'Unknown access control action',
-                    __LINE__);
+                throw new WrongRequestException('Unknown access control action');
         }
 
         return $action;

@@ -24,8 +24,7 @@ abstract class PrepareImageMiddlewareAbstract extends PrepareResourceMiddlewareA
             $resource = $this->resourceDO;
             $crop = explode('x', $crop);
             if (count($crop) != 4) {
-                throw new WrongRequestException('Crop parameter has to consist of four parts, concatenated by "x" char.',
-                    __LINE__);
+                throw new WrongRequestException('Crop parameter has to consist of four parts, concatenated by "x" char.');
             }
             $cropObject = new CropImageDO();
             $cropObject->setX((int) $crop[0]);
@@ -38,15 +37,13 @@ abstract class PrepareImageMiddlewareAbstract extends PrepareResourceMiddlewareA
 
             if ($resizeRatio != $cropRatio) {
                 throw new WrongRequestException('Wrong width to height ratio in crop parameter. 
-                    It should be same as width to height ratio in size parameter',
-                    __LINE__);
+                    It should be same as width to height ratio in size parameter');
             }
 
             if ($cropObject->getX() < 0 || $cropObject->getY() < 0 ||
                 $cropObject->getWidth() < 1 || $cropObject->getHeight() < 1
             ) {
-                throw new WrongRequestException('Wrong crop parameter',
-                    __LINE__);
+                throw new WrongRequestException('Wrong crop parameter');
             }
             $resource->setCrop($cropObject);
         }
@@ -65,8 +62,7 @@ abstract class PrepareImageMiddlewareAbstract extends PrepareResourceMiddlewareA
                 if ($width && $height) {
                     $allowedSizes = $this->config->get('staticus.images.sizes');
                     if (!in_array([$width, $height], $allowedSizes)) {
-                        throw new WrongRequestException('Resource size is not allowed: ' . $width . 'x' . $height,
-                            __LINE__);
+                        throw new WrongRequestException('Resource size is not allowed: ' . $width . 'x' . $height);
                     }
                 }
             }

@@ -139,12 +139,12 @@ abstract class PrepareResourceMiddlewareAbstract extends MiddlewareAbstract
                 $value = trim(preg_replace('/\/+/u', '/', $value));
             } else {
                 if (!preg_match('/^[' . $allowedRegexpSymbols . ']+$/ui', $value)) {
-                    throw new WrongRequestException('Wrong request param "' . $name . '": ' . $value, __LINE__);
+                    throw new WrongRequestException('Wrong request param "' . $name . '": ' . $value);
                 }
             }
         }
         if (empty($value) && !$canBeEmpty) {
-            throw new WrongRequestException('Empty request param "' . $name . '"', __LINE__);
+            throw new WrongRequestException('Empty request param "' . $name . '"');
         }
 
         return $value;

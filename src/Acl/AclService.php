@@ -39,7 +39,7 @@ class AclService implements AclServiceInterface
                 && !$inherit instanceof RoleInterface
             ) {
                 throw new Exceptions\RuntimeException(
-                    'Inherit option must be a string, an array or implement RoleInterface for roles', __LINE__);
+                    'Inherit option must be a string, an array or implement RoleInterface for roles');
             }
             $this->acl->addRole($role, $inherit);
         }
@@ -54,7 +54,7 @@ class AclService implements AclServiceInterface
                 && !$inherit instanceof ResourceInterface
             ) {
                 throw new Exceptions\RuntimeException(
-                    'Inherit option must be a string or implement ResourceInterface for resources', __LINE__);
+                    'Inherit option must be a string or implement ResourceInterface for resources');
             }
             $this->acl->addResource($resource, $inherit);
             $privileges = $this->getOption($options, self::PRIVILEGES, []);

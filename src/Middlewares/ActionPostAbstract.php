@@ -132,16 +132,16 @@ abstract class ActionPostAbstract extends MiddlewareAbstract
         $dir = DATA_DIR . 'download' . DIRECTORY_SEPARATOR;
         $file = $this->resourceDO->getUuid() . '_' . time() . '_' . mt_rand(100, 200) . '.tmp';
         if(!@mkdir($dir) && !is_dir($dir)) {
-            throw new ErrorException('Can\'t create the directory: ' . $dir, __LINE__);
+            throw new ErrorException('Can\'t create the directory: ' . $dir);
         }
         if (is_file($file)) {
             if(!unlink($file)) {
-                throw new ErrorException('Can\'t remove old file: ' . $dir . $file, __LINE__);
+                throw new ErrorException('Can\'t remove old file: ' . $dir . $file);
             }
         }
         $resource = fopen($dir . $file, 'w+');
         if (!$resource) {
-            throw new ErrorException('Can\'t create the file for writting: ' . $dir . $file, __LINE__);
+            throw new ErrorException('Can\'t create the file for writting: ' . $dir . $file);
         }
         $uriEnc = str_replace(' ', '%20', $uri);
         $headers = [
@@ -161,7 +161,7 @@ abstract class ActionPostAbstract extends MiddlewareAbstract
         if (curl_errno($ch)) {
             curl_close($ch);
             fclose($resource);
-            throw new ErrorException('Curl error for uri: ' . $uri . '; ' . curl_error($ch), __LINE__);
+            throw new ErrorException('Curl error for uri: ' . $uri . '; ' . curl_error($ch));
         }
         $size = (int)curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
         curl_close($ch);

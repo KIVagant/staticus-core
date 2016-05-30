@@ -27,7 +27,7 @@ class Config implements ConfigInterface
 
                     return $default;
                 }
-                throw new \RuntimeException('Unknown config route and no default values: ' . $endPath, __LINE__);
+                throw new \RuntimeException('Unknown config route and no default values: ' . $endPath);
             }
             $config = $config[$item];
         }

@@ -32,22 +32,22 @@ class DownloadedFile implements UploadedFileInterface
     {
         if (! is_string($targetPath)) {
             throw new SaveResourceErrorException(
-                'Invalid path provided for move operation; must be a string', __LINE__
+                'Invalid path provided for move operation; must be a string'
             );
         }
 
         if (empty($targetPath)) {
             throw new SaveResourceErrorException(
-                'Invalid path provided for move operation; must be a non-empty string', __LINE__
+                'Invalid path provided for move operation; must be a non-empty string'
             );
         }
 
         if ($this->moved) {
-            throw new SaveResourceErrorException('Cannot move file; already moved!', __LINE__);
+            throw new SaveResourceErrorException('Cannot move file; already moved!');
         }
 
         if (false === rename($this->file, $targetPath)) {
-            throw new SaveResourceErrorException('Error occurred while moving downloaded file', __LINE__);
+            throw new SaveResourceErrorException('Error occurred while moving downloaded file');
         }
         $this->moved = true;
     }
@@ -55,11 +55,11 @@ class DownloadedFile implements UploadedFileInterface
     public function getStream()
     {
         if ($this->error !== UPLOAD_ERR_OK) {
-            throw new SaveResourceErrorException('Cannot retrieve stream due to upload error', __LINE__);
+            throw new SaveResourceErrorException('Cannot retrieve stream due to upload error');
         }
 
         if ($this->moved) {
-            throw new SaveResourceErrorException('Cannot retrieve stream after it has already been moved', __LINE__);
+            throw new SaveResourceErrorException('Cannot retrieve stream after it has already been moved');
         }
 
         if ($this->stream instanceof StreamInterface) {

@@ -32,7 +32,7 @@ class DeleteSafetyResourceCommand implements ResourceCommandInterface
         $baseDir = $this->resourceDO->getBaseDirectory();
         $filePath = $this->resourceDO->getFilePath();
         if (!$uuid || !$type || !$baseDir) {
-            throw new CommandErrorException('Invalid delete request', __LINE__);
+            throw new CommandErrorException('Invalid delete request');
         }
         if (is_file($filePath)) {
             // Make backup of the default version
@@ -71,7 +71,7 @@ class DeleteSafetyResourceCommand implements ResourceCommandInterface
     protected function deleteFile($filePath)
     {
         if (!unlink($filePath)) {
-            throw new CommandErrorException('The file cannot be removed: ' . $filePath, __LINE__);
+            throw new CommandErrorException('The file cannot be removed: ' . $filePath);
         }
     }
 }
