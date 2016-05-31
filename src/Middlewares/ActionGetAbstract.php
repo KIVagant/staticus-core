@@ -81,13 +81,12 @@ abstract class ActionGetAbstract extends MiddlewareAbstract
         $headers = [
             'Content-Type' => $this->resourceDO->getMimeType(),
         ];
-        $filePath = realpath($this->resourceDO->getFilePath());
+        $filePath = $this->resourceDO->getFilePath();
         $filename = $this->resourceDO->getName() . '.' . $this->resourceDO->getType();
         if ($this->filesystem->has($filePath)) {
 
-            return $this->XAccelRedirect($filePath, $filename, false);
+            return $this->XAccelRedirect(realpath($filePath), $filename, false);
         }
-
         /** @see \Zend\Diactoros\Response::$phrases */
         return new EmptyResponse(404, $headers);
     }
