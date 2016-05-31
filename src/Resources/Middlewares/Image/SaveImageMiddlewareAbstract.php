@@ -1,6 +1,7 @@
 <?php
 namespace Staticus\Resources\Middlewares\Image;
 
+use Staticus\Resources\Commands\DeleteImageSizesResourceCommand;
 use Staticus\Resources\File\ResourceDO;
 use Staticus\Resources\Middlewares\SaveResourceMiddlewareAbstract;
 use Staticus\Resources\ResourceDOInterface;
@@ -37,17 +38,8 @@ abstract class SaveImageMiddlewareAbstract extends SaveResourceMiddlewareAbstrac
     {
         // If the basic version replaced and resources looks equal
         if (ResourceImageDO::DEFAULT_SIZE === $resourceDO->getSize()) {
-            $command = 'find '
-                . $resourceDO->getBaseDirectory()
-                . ($resourceDO->getNamespace() ? $resourceDO->getNamespace() . DIRECTORY_SEPARATOR : '')
-                . $resourceDO->getType() . DIRECTORY_SEPARATOR
-                . $resourceDO->getVariant() . DIRECTORY_SEPARATOR
-                . $resourceDO->getVersion() . DIRECTORY_SEPARATOR
-                . '*x*' . DIRECTORY_SEPARATOR // only non-zero image sizes
-                . ' -type f -name ' . $resourceDO->getUuid() . '.' . $resourceDO->getType();
-            $command .= ' -delete';
-
-            shell_exec($command . '> /dev/null 2>&1');
+            $command = new DeleteImageSizesResourceCommand($resourceDO, $this->filesystem);
+            $command();
         }
     }
     protected function backup(ResourceDOInterface $resourceDO)
