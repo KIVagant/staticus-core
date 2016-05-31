@@ -2,7 +2,7 @@
 namespace Staticus\Resources\Middlewares;
 
 use Staticus\Config\ConfigInterface;
-use Staticus\Diactoros\FileContentResponse\ResourceDoResponse;
+use Staticus\Diactoros\Response\ResourceDoResponse;
 use Staticus\Middlewares\MiddlewareAbstract;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

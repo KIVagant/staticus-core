@@ -2,7 +2,7 @@
 namespace Staticus\Resources\Middlewares\Image;
 
 use League\Flysystem\FilesystemInterface;
-use Staticus\Diactoros\FileContentResponse\ResourceDoResponse;
+use Staticus\Diactoros\Response\ResourceDoResponse;
 use Staticus\Middlewares\MiddlewareAbstract;
 use Staticus\Resources\Exceptions\SaveResourceErrorException;
 use Staticus\Resources\Image\ResourceImageDOInterface;

@@ -3,11 +3,11 @@ namespace Staticus\Middlewares;
 
 use League\Flysystem\FilesystemInterface;
 use Staticus\Diactoros\DownloadedFile;
-use Staticus\Diactoros\FileContentResponse\FileUploadedResponse;
+use Staticus\Diactoros\Response\FileUploadedResponse;
 use Staticus\Exceptions\ErrorException;
 use Staticus\Resources\Middlewares\PrepareResourceMiddlewareAbstract;
 use Staticus\Resources\ResourceDOInterface;
-use Staticus\Diactoros\FileContentResponse\FileContentResponse;
+use Staticus\Diactoros\Response\FileContentResponse;
 use Zend\Diactoros\Response\EmptyResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

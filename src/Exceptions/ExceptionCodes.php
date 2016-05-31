@@ -15,7 +15,7 @@ class ExceptionCodes
         \App\Actions\Voice\VoiceAdapterFactory::class,
 
         \Staticus\Config\Config::class,
-        \Staticus\Diactoros\FileContentResponse\FileUploadedResponse::class,
+        \Staticus\Diactoros\Response\FileUploadedResponse::class,
         \Staticus\Middlewares\ActionGetAbstract::class,
 
         \Staticus\Resources\Commands\CopyResourceCommand::class,

@@ -1,5 +1,5 @@
 <?php
-namespace Staticus\Diactoros\FileContentResponse;
+namespace Staticus\Diactoros\Response;
 
 use Psr\Http\Message\StreamInterface;
 use Zend\Diactoros\Response;

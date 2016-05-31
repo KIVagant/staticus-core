@@ -6,7 +6,7 @@ use Staticus\Auth\UserInterface;
 use Staticus\Config\ConfigInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Staticus\Diactoros\FileContentResponse\ResourceDoResponse;
+use Staticus\Diactoros\Response\ResourceDoResponse;
 use Staticus\Exceptions\WrongRequestException;
 use Staticus\Resources\Middlewares\PrepareResourceMiddlewareAbstract;
 use Staticus\Resources\ResourceDOInterface;

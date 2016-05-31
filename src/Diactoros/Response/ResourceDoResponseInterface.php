@@ -1,5 +1,5 @@
 <?php
-namespace Staticus\Diactoros\FileContentResponse;
+namespace Staticus\Diactoros\Response;
 
 use Staticus\Resources\ResourceDOInterface;
 

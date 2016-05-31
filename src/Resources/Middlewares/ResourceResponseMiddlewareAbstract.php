@@ -1,9 +1,9 @@
 <?php
 namespace Staticus\Resources\Middlewares;
 
-use Staticus\Diactoros\FileContentResponse\FileContentResponse;
-use Staticus\Diactoros\FileContentResponse\FileUploadedResponse;
-use Staticus\Diactoros\FileContentResponse\ResourceDoResponse;
+use Staticus\Diactoros\Response\FileContentResponse;
+use Staticus\Diactoros\Response\FileUploadedResponse;
+use Staticus\Diactoros\Response\ResourceDoResponse;
 use Staticus\Middlewares\MiddlewareAbstract;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

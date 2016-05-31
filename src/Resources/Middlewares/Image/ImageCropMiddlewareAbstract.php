@@ -1,7 +1,7 @@
 <?php
 namespace Staticus\Resources\Middlewares\Image;
 
-use Staticus\Diactoros\FileContentResponse\ResourceDoResponse;
+use Staticus\Diactoros\Response\ResourceDoResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Staticus\Resources\Image\CropImageDOInterface;
