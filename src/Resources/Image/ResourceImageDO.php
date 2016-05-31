@@ -10,7 +10,7 @@ abstract class ResourceImageDO extends ResourceDOAbstract implements ResourceIma
 {
     const DEFAULT_WIDTH = 0;
     const DEFAULT_HEIGHT = 0;
-    const DEFAULT_SIZE = '0';
+    const DEFAULT_SIZE = 0;
     protected $width = 0;
     protected $height = 0;
 

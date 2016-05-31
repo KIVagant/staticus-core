@@ -3,7 +3,6 @@ namespace Staticus\Resources\Middlewares\Image;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Staticus\Diactoros\Response\ResourceDoResponse;
 
 abstract class ImageResizeMiddlewareAbstract extends ImagePostProcessingMiddlewareAbstract
 {
@@ -19,22 +18,32 @@ abstract class ImageResizeMiddlewareAbstract extends ImagePostProcessingMiddlewa
 
             return $next($request, $response);
         }
-        $resourceDO = $this->resourceDO;
-        if ($resourceDO->getSize()) {
-            if ($resourceDO->isNew() // For POST method
-                || $resourceDO->isRecreate() // For POST method
-                || !$this->filesystem->has($resourceDO->getFilePath()) // For GET method
-            ) {
-                $targetResourceDO = $this->chooseTargetResource($response);
+        if ($this->resourceDO->getSize()) {
+            $path = $this->resourceDO->getFilePath();
 
-                $defaultImagePath = $targetResourceDO->getFilePath();
-                if ($this->filesystem->has($defaultImagePath)) {
-                    $this->resizeImage($defaultImagePath, $resourceDO->getFilePath(), $resourceDO->getWidth(), $resourceDO->getHeight());
+            // (POST) Resource just created or re-created
+            if ($this->resourceDO->isNew()
+                || $this->resourceDO->isRecreate()
+            ) {
+                /**
+                 * Explanation: If it's just an artifact that is left from the previous file after re-creation
+                 * than you need to remove it exact in recreation moment
+                 * @see \Staticus\Resources\Middlewares\Image\SaveImageMiddlewareAbstract::afterSave
+                 */
+                // Some of previous middlewares already created this file size
+                if ($this->filesystem->has($path)) {
+                    $this->resizeImage($path, $path, $this->resourceDO->getWidth(), $this->resourceDO->getHeight());
+                } else {
+                    $modelResourceDO = $this->getResourceWithoutSizes();
+                    $this->resizeImage($modelResourceDO->getFilePath(), $path, $this->resourceDO->getWidth(), $this->resourceDO->getHeight());
                 }
+
+            // (GET) Resource should be exist, just check if this size wasn't created before
+            } else if (!$this->filesystem->has($path)) {
+                $modelResourceDO = $this->getResourceWithoutSizes();
+                $this->resizeImage($modelResourceDO->getFilePath(), $path, $this->resourceDO->getWidth(), $this->resourceDO->getHeight());
             }
         }
-
-        $response = new ResourceDoResponse($resourceDO, $response->getStatusCode(), $response->getHeaders());
 
         return $next($request, $response);
     }

@@ -19,22 +19,33 @@ abstract class ImageCropMiddlewareAbstract extends ImagePostProcessingMiddleware
 
             return $next($request, $response);
         }
-        $resourceDO = $this->resourceDO;
-        $crop = $resourceDO->getCrop();
-        if ($resourceDO->getSize() && $crop) {
-            if ($resourceDO->isNew() // For POST method
-                || $resourceDO->isRecreate() // For POST method
-                || !$this->filesystem->has($resourceDO->getFilePath()) // For GET method
-            ) {
-                $targetResourceDO = $this->chooseTargetResource($response);
+        $crop = $this->resourceDO->getCrop();
+        if ($this->resourceDO->getSize() && $crop) {
+            $path = $this->resourceDO->getFilePath();
 
-                $defaultImagePath = $targetResourceDO->getFilePath();
-                if ($this->filesystem->has($defaultImagePath)) {
-                    $this->cropImage($defaultImagePath, $resourceDO->getFilePath(), $crop);
+            // (POST) Resource just created or re-created
+            if ($this->resourceDO->isNew()
+                || $this->resourceDO->isRecreate()
+            ) {
+                /**
+                 * Explanation: If it's just an artifact that is left from the previous file after re-creation
+                 * than you need to remove it exact in recreation moment
+                 * @see \Staticus\Resources\Middlewares\Image\SaveImageMiddlewareAbstract::afterSave
+                 */
+                // Some of previous middlewares already created this file size
+                if ($this->filesystem->has($path)) {
+                    $this->cropImage($path, $path, $crop);
+                } else {
+                    $modelResourceDO = $this->getResourceWithoutSizes();
+                    $this->cropImage($modelResourceDO->getFilePath(), $path, $crop);
                 }
+
+            // (GET) Resource should be exist, just check if this size wasn't created before
+            } else if (!$this->filesystem->has($path)) {
+                $modelResourceDO = $this->getResourceWithoutSizes();
+                $this->cropImage($modelResourceDO->getFilePath(), $path, $crop);
             }
         }
-        $response = new ResourceDoResponse($resourceDO, $response->getStatusCode(), $response->getHeaders());
 
         return $next($request, $response);
     }

@@ -39,26 +39,16 @@ abstract class ImagePostProcessingMiddlewareAbstract extends MiddlewareAbstract
         || $response instanceof Response;
     }
 
-    protected function getTargetResourceDO()
-    {
-        $defaultSizeResourceDO = clone $this->resourceDO;
-        $defaultSizeResourceDO->setWidth();
-        $defaultSizeResourceDO->setHeight();
-
-        return $defaultSizeResourceDO;
-    }
-
-
     /**
-     * @param ResponseInterface $response
-     * @return ResourceDOInterface|ResourceImageDOInterface
+     * @return \Staticus\Resources\Image\ResourceImageDOInterface
      */
-    protected function chooseTargetResource(ResponseInterface $response)
+    protected function getResourceWithoutSizes()
     {
-        $targetResourceDO = ($response instanceof ResourceDoResponse)
-            ? $response->getContent()
-            : $this->getTargetResourceDO();
-        return $targetResourceDO;
+        $modelResourceDO = clone $this->resourceDO;
+        $modelResourceDO->setWidth();
+        $modelResourceDO->setHeight();
+
+        return $modelResourceDO;
     }
 
     /**
