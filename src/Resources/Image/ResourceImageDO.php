@@ -17,7 +17,7 @@ abstract class ResourceImageDO extends ResourceDOAbstract implements ResourceIma
     /**
      * @var CropImageDOInterface
      */
-    protected $crop = null;
+    protected $crop;
 
     public function reset()
     {
@@ -25,6 +25,7 @@ abstract class ResourceImageDO extends ResourceDOAbstract implements ResourceIma
         $this->type = static::TYPE;
         $this->width = 0;
         $this->height = 0;
+        $this->crop = null;
         return $this;
     }
 
@@ -137,6 +138,8 @@ abstract class ResourceImageDO extends ResourceDOAbstract implements ResourceIma
         $data = parent::toArray();
         if ($this->crop) {
             $data['crop'] = $this->crop->toArray();
+        } else {
+            unset($data['crop']);
         }
 
         return $data;
