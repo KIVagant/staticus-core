@@ -126,6 +126,10 @@ class AclMiddleware implements MiddlewareInterface
 
             return Actions::ACTION_SEARCH;
         }
+        if (PrepareResourceMiddlewareAbstract::getParamFromRequest(Actions::ACTION_LIST, $request)) {
+
+            return Actions::ACTION_LIST;
+        }
 
         $method = $request->getMethod();
         switch ($method) {
