@@ -5,9 +5,11 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Staticus\Config\ConfigInterface;
 use Staticus\Config\Config;
+use Staticus\Diactoros\Response\NotFoundResponse;
 use Staticus\Exceptions\ExceptionCodes;
 use Staticus\Exceptions\WrongRequestException;
 use Zend\Diactoros\Response\JsonResponse;
+use Zend\Expressive\Container\Exception\NotFoundException;
 
 class ErrorHandler
 {
@@ -32,7 +34,11 @@ class ErrorHandler
             if (isset($className[0]['class'])) {
                 $className = $className[0]['class'];
             }
-            if ($error instanceof WrongRequestException) {
+            if ($error instanceof NotFoundException) {
+                $error = $this->getErrorArray($error->getMessage(), $this->getErrorCode($error, $className));
+
+                return new NotFoundResponse($error);
+            } else if ($error instanceof WrongRequestException) {
 
                 /** @see \Zend\Diactoros\Response::$phrases */
                 return $this->response(400, $error->getMessage(),
@@ -44,7 +50,7 @@ class ErrorHandler
                     : 'Internal error';
 
                 /** @see \Zend\Diactoros\Response::$phrases */
-                return $this->response(503, $message, $error->getCode() . '.' . ExceptionCodes::code($className) . '.' . $error->getLine());
+                return $this->response(503, $message, $this->getErrorCode($error, $className));
             }
         } else {
             $next($request, $response, $next);
@@ -52,12 +58,35 @@ class ErrorHandler
     }
     protected function response($status, $message, $code)
     {
+        $error = $this->getErrorArray($message, $code);
+
+        return new JsonResponse($error, $status);
+    }
+
+    /**
+     * @param $message
+     * @param $code
+     * @return array
+     */
+    protected function getErrorArray($message, $code)
+    {
         $error = [
             'error' => [
                 'message' => $message,
-                'code' => $code],
+                'code' => $code
+            ],
         ];
 
-        return new JsonResponse($error, $status);
+        return $error;
+    }
+
+    /**
+     * @param $error
+     * @param $className
+     * @return string
+     */
+    protected function getErrorCode($error, $className)
+    {
+        return $error->getCode() . '.' . ExceptionCodes::code($className) . '.' . $error->getLine();
     }
 }
