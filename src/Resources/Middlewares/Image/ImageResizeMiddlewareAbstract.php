@@ -19,7 +19,7 @@ abstract class ImageResizeMiddlewareAbstract extends ImagePostProcessingMiddlewa
 
             return $next($request, $response);
         }
-        if ($this->resourceDO->getSize()) {
+        if ($this->resourceDO->getDimension()) {
             $path = $this->resourceDO->getFilePath();
 
             // (POST) Resource just created or re-created

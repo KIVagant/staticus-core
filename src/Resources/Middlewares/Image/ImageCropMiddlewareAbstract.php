@@ -20,7 +20,7 @@ abstract class ImageCropMiddlewareAbstract extends ImagePostProcessingMiddleware
             return $next($request, $response);
         }
         $crop = $this->resourceDO->getCrop();
-        if ($this->resourceDO->getSize() && $crop) {
+        if ($this->resourceDO->getDimension() && $crop) {
             $path = $this->resourceDO->getFilePath();
 
             // (POST) Resource just created or re-created

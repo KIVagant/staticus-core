@@ -10,7 +10,9 @@ abstract class ResourceImageDO extends ResourceDOAbstract implements ResourceIma
 {
     const DEFAULT_WIDTH = 0;
     const DEFAULT_HEIGHT = 0;
-    const DEFAULT_SIZE = 0;
+    const DEFAULT_DIMENSION = 0;
+    const TOKEN_DIMENSION = 'dimension';
+
     protected $width = 0;
     protected $height = 0;
 
@@ -97,20 +99,35 @@ abstract class ResourceImageDO extends ResourceDOAbstract implements ResourceIma
             . $this->getType() . DIRECTORY_SEPARATOR
             . $this->getVariant() . DIRECTORY_SEPARATOR
             . $this->getVersion() . DIRECTORY_SEPARATOR
-            . $this->getSize() . DIRECTORY_SEPARATOR
+            . $this->getDimension() . DIRECTORY_SEPARATOR
             . $this->getUuid() . '.' . $this->getType();
+    }
+
+    /**
+     * Map of the resource directory elements.
+     * For example, you can use it with the strtok() method. Or for routes buildings.
+     * @return array
+     * @see strtok()
+     * @example strtok($relative_path, '/');
+     */
+    public function getDirectoryTokens()
+    {
+        $tokens = parent::getDirectoryTokens();
+        $tokens[] = static::TOKEN_DIMENSION;
+
+        return $tokens;
     }
 
     /**
      * @return int|string
      */
-    public function getSize()
+    public function getDimension()
     {
         $width = $this->getWidth();
         $height = $this->getHeight();
         $size = ($width > 0 && $height > 0)
             ? $width . 'x' . $height
-            : self::DEFAULT_SIZE;
+            : static::DEFAULT_DIMENSION;
 
         return $size;
     }
@@ -141,6 +158,7 @@ abstract class ResourceImageDO extends ResourceDOAbstract implements ResourceIma
         } else {
             unset($data['crop']);
         }
+        $data[self::TOKEN_DIMENSION] = '' . $this->getDimension();
 
         return $data;
     }

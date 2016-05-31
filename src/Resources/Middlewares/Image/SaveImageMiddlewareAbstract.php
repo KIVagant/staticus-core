@@ -3,6 +3,7 @@ namespace Staticus\Resources\Middlewares\Image;
 
 use Staticus\Resources\Commands\DeleteImageSizesResourceCommand;
 use Staticus\Resources\File\ResourceDO;
+use Staticus\Resources\Image\ResourceImageDOInterface;
 use Staticus\Resources\Middlewares\SaveResourceMiddlewareAbstract;
 use Staticus\Resources\ResourceDOInterface;
 use Staticus\Resources\Image\ResourceImageDO;
@@ -27,7 +28,7 @@ abstract class SaveImageMiddlewareAbstract extends SaveResourceMiddlewareAbstrac
             $defaultDO->setHeight();
             $this->copyResource($resourceDO, $defaultDO);
         }
-        if (ResourceImageDO::DEFAULT_SIZE !== $resourceDO->getSize()) {
+        if (ResourceImageDO::DEFAULT_DIMENSION !== $resourceDO->getDimension()) {
             $defaultDO = clone $resourceDO;
             $defaultDO->setWidth();
             $defaultDO->setHeight();
@@ -36,21 +37,23 @@ abstract class SaveImageMiddlewareAbstract extends SaveResourceMiddlewareAbstrac
     }
     protected function afterSave(ResourceDOInterface $resourceDO)
     {
-        if (ResourceImageDO::DEFAULT_SIZE === $resourceDO->getSize()) {
+        /** @var ResourceImageDOInterface $resourceDO */
+        if (ResourceImageDO::DEFAULT_DIMENSION === $resourceDO->getDimension()) {
             $command = new DeleteImageSizesResourceCommand($resourceDO, $this->filesystem);
             $command();
         }
     }
     protected function backup(ResourceDOInterface $resourceDO)
     {
-
-        return ResourceImageDO::DEFAULT_SIZE === $resourceDO->getSize()
+        /** @var ResourceImageDOInterface $resourceDO */
+        return ResourceImageDO::DEFAULT_DIMENSION === $resourceDO->getDimension()
             ? parent::backup($resourceDO)
             : $resourceDO;
     }
     protected function destroyEqual(ResourceDOInterface $resourceDO, ResourceDOInterface $backupResourceVerDO)
     {
-        return ResourceImageDO::DEFAULT_SIZE === $resourceDO->getSize()
+        /** @var ResourceImageDOInterface $resourceDO */
+        return ResourceImageDO::DEFAULT_DIMENSION === $resourceDO->getDimension()
             ? parent::destroyEqual($resourceDO, $backupResourceVerDO)
             : $resourceDO;
     }

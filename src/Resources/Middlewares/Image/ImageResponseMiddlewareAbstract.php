@@ -18,8 +18,8 @@ abstract class ImageResponseMiddlewareAbstract extends ResourceResponseMiddlewar
         if (ResourceDOInterface::DEFAULT_VERSION !== $resourceDO->getVersion()) {
             $query['v'] = $resourceDO->getVersion();
         }
-        if (ResourceImageDO::DEFAULT_SIZE !== $resourceDO->getSize()) {
-            $query['size'] = $resourceDO->getSize();
+        if (ResourceImageDO::DEFAULT_DIMENSION !== $resourceDO->getDimension()) {
+            $query['size'] = $resourceDO->getDimension();
         }
         $query = http_build_query($query);
         if ($query) {

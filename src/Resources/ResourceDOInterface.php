@@ -122,6 +122,7 @@ interface ResourceDOInterface
      * For example, you can use it with the strtok() method
      * @return array
      * @see strtok()
+     * @see \Staticus\Resources\Commands\FindResourceOptionsCommand::splitDirectoryByTokens
      * @example strtok($relative_path, '/');
      */
     public function getDirectoryTokens();
