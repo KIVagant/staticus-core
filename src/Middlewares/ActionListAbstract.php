@@ -3,7 +3,7 @@ namespace Staticus\Middlewares;
 
 use League\Flysystem\FilesystemInterface;
 use Staticus\Exceptions\NotFoundException;
-use Staticus\Resources\Commands\FindVersionsResourceCommand;
+use Staticus\Resources\Commands\FindResourceOptionsCommand;
 use Staticus\Resources\ResourceDOInterface;
 use Zend\Diactoros\Response\EmptyResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -56,20 +56,11 @@ abstract class ActionListAbstract extends MiddlewareAbstract
 
     protected function action()
     {
-        $this->actionResult['current'] = $this->findCurrentResoure();
-        $this->actionResult['versions'] = $this->findVersions();
+        $this->actionResult['current'] = $this->findCurrentResource();
+        $this->actionResult['options'] = $this->findOptions();
     }
 
-    protected function findVersions()
-    {
-        $command = new FindVersionsResourceCommand($this->resourceDO, $this->filesystem);
-        $versions = $command();
-        sort($versions);
-
-        return $versions;
-    }
-
-    protected function findCurrentResoure()
+    protected function findCurrentResource()
     {
         $filePath = realpath($this->resourceDO->getFilePath());
         if (!$this->filesystem->has($filePath)) {
@@ -79,5 +70,22 @@ abstract class ActionListAbstract extends MiddlewareAbstract
         $current = $this->resourceDO->toArray();
 
         return $current;
+    }
+
+    protected function findOptions()
+    {
+        $command = new FindResourceOptionsCommand($this->resourceDO, $this->filesystem);
+
+        return $command($this->allowedProperties());
+    }
+
+    protected function allowedProperties()
+    {
+        return [
+            'size',
+            'timestamp',
+            'variant',
+            'version',
+        ];
     }
 }
