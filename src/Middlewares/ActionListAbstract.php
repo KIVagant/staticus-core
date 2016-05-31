@@ -56,7 +56,7 @@ abstract class ActionListAbstract extends MiddlewareAbstract
 
     protected function action()
     {
-        $this->actionResult['current'] = $this->findCurrentResource();
+        $this->actionResult['resource'] = $this->findCurrentResource();
         $this->actionResult['options'] = $this->findOptions();
     }
 

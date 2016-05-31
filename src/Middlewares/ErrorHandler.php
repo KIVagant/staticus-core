@@ -79,7 +79,7 @@ class ErrorHandler
             ],
         ];
         if ($resourceDO) {
-            $error['error']['detail']['requested'] = $resourceDO->toArray();
+            $error['error']['detail']['resource'] = $resourceDO->toArray();
         }
 
         return $error;
