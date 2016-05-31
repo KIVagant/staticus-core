@@ -26,25 +26,30 @@ abstract class PrepareImageMiddlewareAbstract extends PrepareResourceMiddlewareA
             if (count($crop) != 4) {
                 throw new WrongRequestException('Crop parameter has to consist of four parts, concatenated by "x" char.');
             }
+
             $cropObject = new CropImageDO();
             $cropObject->setX((int) $crop[0]);
             $cropObject->setY((int) $crop[1]);
             $cropObject->setWidth((int) $crop[2]);
             $cropObject->setHeight((int) $crop[3]);
 
-            $resizeRatio = $resource->getWidth() / $resource->getHeight();
-            $cropRatio = $cropObject->getWidth() / $cropObject->getHeight();
-
-            if ($resizeRatio != $cropRatio) {
-                throw new WrongRequestException('Wrong width to height ratio in crop parameter. 
-                    It should be same as width to height ratio in size parameter');
+            if (!$resource->getWidth() || !$cropObject->getHeight()) {
+                throw new WrongRequestException('You should send the size=[X]x[Y] parameter together with the crop parameter');
             }
-
             if ($cropObject->getX() < 0 || $cropObject->getY() < 0 ||
                 $cropObject->getWidth() < 1 || $cropObject->getHeight() < 1
             ) {
-                throw new WrongRequestException('Wrong crop parameter');
+                throw new WrongRequestException('Crop parameters can not be less than zero');
             }
+
+            $resizeRatio = $resource->getWidth() / $resource->getHeight();
+            $cropRatio = $cropObject->getWidth() / $cropObject->getHeight();
+
+            if ($resizeRatio !== $cropRatio) {
+                throw new WrongRequestException('Wrong width to height ratio in crop parameter.
+                    It should be same as width to height ratio in size parameter');
+            }
+
             $resource->setCrop($cropObject);
         }
     }
@@ -59,6 +64,9 @@ abstract class PrepareImageMiddlewareAbstract extends PrepareResourceMiddlewareA
             if (!empty($size[0]) && !empty($size[1])) {
                 $width = (int)$size[0];
                 $height = (int)$size[1];
+                if ($width < 0 || $height < 0) {
+                    throw new WrongRequestException('Sizes can not be less than zero');
+                }
                 if ($width && $height) {
                     $allowedSizes = $this->config->get('staticus.images.sizes');
                     if (!in_array([$width, $height], $allowedSizes)) {

@@ -1,10 +1,10 @@
 <?php
 namespace Staticus\Resources\Middlewares\Image;
 
-use Staticus\Diactoros\Response\ResourceDoResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Staticus\Resources\Image\CropImageDOInterface;
+use Zend\Expressive\Container\Exception\NotFoundException;
 
 abstract class ImageCropMiddlewareAbstract extends ImagePostProcessingMiddlewareAbstract
 {
@@ -52,6 +52,9 @@ abstract class ImageCropMiddlewareAbstract extends ImagePostProcessingMiddleware
 
     public function cropImage($sourcePath, $destinationPath, CropImageDOInterface $crop)
     {
+        if (!$this->filesystem->has($sourcePath)) {
+            throw new NotFoundException('Can not crop. Resource is not found');
+        }
         $this->createDirectory(dirname($destinationPath));
         $imagick = $this->getImagick($sourcePath);
         $imagick->cropImage(

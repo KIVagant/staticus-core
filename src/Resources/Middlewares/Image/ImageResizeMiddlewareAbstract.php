@@ -3,6 +3,7 @@ namespace Staticus\Resources\Middlewares\Image;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Zend\Expressive\Container\Exception\NotFoundException;
 
 abstract class ImageResizeMiddlewareAbstract extends ImagePostProcessingMiddlewareAbstract
 {
@@ -50,6 +51,9 @@ abstract class ImageResizeMiddlewareAbstract extends ImagePostProcessingMiddlewa
 
     public function resizeImage($sourcePath, $destinationPath, $width, $height)
     {
+        if (!$this->filesystem->has($sourcePath)) {
+            throw new NotFoundException('Can not resize. Resource is not found');
+        }
         $this->createDirectory(dirname($destinationPath));
         $imagick = $this->getImagick($sourcePath);
         $imagick->adaptiveResizeImage($width, $height, true);
