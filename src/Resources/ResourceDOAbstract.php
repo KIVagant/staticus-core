@@ -99,6 +99,23 @@ abstract class ResourceDOAbstract implements ResourceDOInterface, \Iterator, Res
     }
 
     /**
+     * Map of the resource directory elements.
+     * For example, you can use it with the strtok() method. Or for routes buildings.
+     * @return array
+     * @see strtok()
+     * @example strtok($relative_path, '/');
+     */
+    public function getDirectoryTokens()
+    {
+        return [
+            'namespace',
+            'type',
+            'variant',
+            'version',
+        ];
+    }
+
+    /**
      * Note: Uuid is not really unique, if you want full unique identifier, use hash sum from the full path, for example
      * @return mixed
      */

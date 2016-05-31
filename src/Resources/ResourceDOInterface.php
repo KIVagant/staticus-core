@@ -118,6 +118,15 @@ interface ResourceDOInterface
     public function generateFilePath();
 
     /**
+     * Map of the resource directory elements
+     * For example, you can use it with the strtok() method
+     * @return array
+     * @see strtok()
+     * @example strtok($relative_path, '/');
+     */
+    public function getDirectoryTokens();
+
+    /**
      * @return mixed
      */
     public function getBaseDirectory();
