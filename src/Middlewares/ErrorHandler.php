@@ -7,9 +7,10 @@ use Staticus\Config\ConfigInterface;
 use Staticus\Config\Config;
 use Staticus\Diactoros\Response\NotFoundResponse;
 use Staticus\Exceptions\ExceptionCodes;
+use Staticus\Exceptions\ResourceNotFoundException;
 use Staticus\Exceptions\WrongRequestException;
+use Staticus\Resources\ResourceDOInterface;
 use Zend\Diactoros\Response\JsonResponse;
-use Zend\Expressive\Container\Exception\NotFoundException;
 
 class ErrorHandler
 {
@@ -34,8 +35,8 @@ class ErrorHandler
             if (isset($className[0]['class'])) {
                 $className = $className[0]['class'];
             }
-            if ($error instanceof NotFoundException) {
-                $error = $this->getErrorArray($error->getMessage(), $this->getErrorCode($error, $className));
+            if ($error instanceof ResourceNotFoundException) {
+                $error = $this->getErrorArray($error->getMessage(), $this->getErrorCode($error, $className), $error->getResourceDO());
 
                 return new NotFoundResponse($error);
             } else if ($error instanceof WrongRequestException) {
@@ -66,16 +67,20 @@ class ErrorHandler
     /**
      * @param $message
      * @param $code
+     * @param ResourceDOInterface $resourceDO
      * @return array
      */
-    protected function getErrorArray($message, $code)
+    protected function getErrorArray($message, $code, ResourceDOInterface $resourceDO = null)
     {
         $error = [
             'error' => [
-                'message' => $message,
-                'code' => $code
+                'title' => $message,
+                'code' => $code,
             ],
         ];
+        if ($resourceDO) {
+            $error['error']['detail']['requested'] = $resourceDO->toArray();
+        }
 
         return $error;
     }

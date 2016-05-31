@@ -2,7 +2,7 @@
 namespace Staticus\Middlewares;
 
 use League\Flysystem\FilesystemInterface;
-use Staticus\Exceptions\NotFoundException;
+use Staticus\Exceptions\ResourceNotFoundException;
 use Staticus\Resources\Commands\FindResourceOptionsCommand;
 use Staticus\Resources\ResourceDOInterface;
 use Zend\Diactoros\Response\EmptyResponse;
@@ -65,7 +65,7 @@ abstract class ActionListAbstract extends MiddlewareAbstract
         $filePath = realpath($this->resourceDO->getFilePath());
         if (!$this->filesystem->has($filePath)) {
 
-            throw new NotFoundException('Resource "' . $this->resourceDO->getName() . '.' . $this->resourceDO->getType() . '" is not found');
+            throw new ResourceNotFoundException($this->resourceDO);
         }
         $current = $this->resourceDO->toArray();
 
