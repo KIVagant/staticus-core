@@ -1,6 +1,10 @@
 <?php
 namespace Staticus\Resources\Commands;
 
+/**
+ * @deprecated
+ * @see \Staticus\Resources\Commands\FindResourceOptionsCommand
+ */
 trait ShellFindImagesTrait
 {
     protected function getFindSizesCommand()

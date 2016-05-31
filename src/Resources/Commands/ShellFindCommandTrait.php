@@ -4,6 +4,10 @@ namespace Staticus\Resources\Commands;
 
 use Staticus\Resources\ResourceDOInterface;
 
+/**
+ * @deprecated
+ * @see \Staticus\Resources\Commands\FindResourceOptionsCommand
+ */
 trait ShellFindCommandTrait
 {
     /**
