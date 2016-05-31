@@ -30,6 +30,7 @@ class DeleteSafetyResourceCommand implements ResourceCommandInterface
         $variant = $this->resourceDO->getVariant();
         $version = $this->resourceDO->getVersion();
         $baseDir = $this->resourceDO->getBaseDirectory();
+        $namespace = $this->resourceDO->getNamespace();
         $filePath = $this->resourceDO->getFilePath();
         if (!$uuid || !$type || !$baseDir) {
             throw new CommandErrorException('Invalid delete request');
@@ -37,7 +38,7 @@ class DeleteSafetyResourceCommand implements ResourceCommandInterface
         if (is_file($filePath)) {
             // Make backup of the default version
             if (ResourceDOInterface::DEFAULT_VERSION === $version) {
-                $lastVersion = $this->findLastExistsVersion($baseDir, $uuid, $type, $variant);
+                $lastVersion = $this->findLastExistsVersion($baseDir, $namespace, $uuid, $type, $variant);
 
                 // But only if previous existing version is not the default and not has the same content as deleting
                 if (ResourceDOInterface::DEFAULT_VERSION !== $lastVersion) {

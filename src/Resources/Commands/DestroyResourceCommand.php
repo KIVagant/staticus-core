@@ -34,6 +34,7 @@ class DestroyResourceCommand implements ResourceCommandInterface
         $variant = $this->resourceDO->getVariant();
         $version = $this->resourceDO->getVersion();
         $baseDir = $this->resourceDO->getBaseDirectory();
+        $namespace = $this->resourceDO->getNamespace();
         $filePath = $this->resourceDO->getFilePath();
         if (!$uuid || !$type || !$baseDir || !$filePath) {
             throw new CommandErrorException('Invalid destroy request');
@@ -43,7 +44,7 @@ class DestroyResourceCommand implements ResourceCommandInterface
                 throw new CommandErrorException('The file cannot be removed: ' . $filePath);
             }
         } else {
-            $command = $this->getShellFindCommand($baseDir, $uuid, $type, $variant, $version);
+            $command = $this->getShellFindCommand($baseDir, $namespace, $uuid, $type, $variant, $version);
             $command .= ' -delete';
             shell_exec($command . '> /dev/null 2>&1');
         }

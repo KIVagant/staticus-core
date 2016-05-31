@@ -35,13 +35,15 @@ abstract class SaveImageMiddlewareAbstract extends SaveResourceMiddlewareAbstrac
     }
     protected function afterSave(ResourceDOInterface $resourceDO)
     {
-        // If the basic version replaced
+        // If the basic version replaced and resources looks equal
         if (ResourceImageDO::DEFAULT_SIZE === $resourceDO->getSize()) {
             $command = 'find '
-                . $resourceDO->getBaseDirectory() . $resourceDO->getType()
-                . DIRECTORY_SEPARATOR . $resourceDO->getVariant() . DIRECTORY_SEPARATOR
+                . $resourceDO->getBaseDirectory()
+                . ($resourceDO->getNamespace() ? $resourceDO->getNamespace() . DIRECTORY_SEPARATOR : '')
+                . $resourceDO->getType() . DIRECTORY_SEPARATOR
+                . $resourceDO->getVariant() . DIRECTORY_SEPARATOR
                 . $resourceDO->getVersion() . DIRECTORY_SEPARATOR
-                . '*x*' . DIRECTORY_SEPARATOR // only non-zero versions
+                . '*x*' . DIRECTORY_SEPARATOR // only non-zero image sizes
                 . ' -type f -name ' . $resourceDO->getUuid() . '.' . $resourceDO->getType();
             $command .= ' -delete';
 
