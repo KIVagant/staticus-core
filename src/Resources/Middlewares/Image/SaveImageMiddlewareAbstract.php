@@ -36,7 +36,6 @@ abstract class SaveImageMiddlewareAbstract extends SaveResourceMiddlewareAbstrac
     }
     protected function afterSave(ResourceDOInterface $resourceDO)
     {
-        // If the basic version replaced and resources looks equal
         if (ResourceImageDO::DEFAULT_SIZE === $resourceDO->getSize()) {
             $command = new DeleteImageSizesResourceCommand($resourceDO, $this->filesystem);
             $command();
