@@ -1,8 +1,14 @@
 {
   "name": "kivagant/staticus-core",
   "description": "The core part of Staticus Project. See more in the kivagant/staticus project on the GitHub.",
-  "keywords": ["staticus", "download", "nginx", "cache"],
-  "type": "project",
+  "homepage": "https://github.com/KIVagant/staticus-core",
+  "keywords": [
+    "file",
+    "manager",
+    "generator",
+    "api"
+  ],
+  "type": "library",
   "license": "Apache 2.0",
   "extra": {
     "branch-alias": {
