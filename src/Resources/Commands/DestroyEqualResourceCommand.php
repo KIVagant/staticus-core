@@ -40,6 +40,10 @@ class DestroyEqualResourceCommand implements ResourceCommandInterface
         $suspectType = $this->suspectResourceDO->getType();
         $originFilePath = $this->originResourceDO->getFilePath();
         $suspectFilePath = $this->suspectResourceDO->getFilePath();
+
+        // Unfortunately, this condition can not always work fine.
+        // Because some Middlewares can compress, resize etc. the resource that saved before
+        // and the second uploaded copy will never be equal
         if ($originType === $suspectType
             && $this->filesystem->getSize($originFilePath) === $this->filesystem->getSize($suspectFilePath)
             && md5_file($originFilePath) === md5_file($suspectFilePath)
