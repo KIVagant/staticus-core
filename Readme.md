@@ -6,7 +6,7 @@ Look to the parent repository for more information.
 
 ## License
 
-Made in the [EnglishDom online school](http://www.myenglishdom.com/).
+Made in the [EnglishDom online school](https://www.englishdom.com/en/).
 
 Copyright 2016 Eugene Glotov <kivagant at gmail.com>
 
