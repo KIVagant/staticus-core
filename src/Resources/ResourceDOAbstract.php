@@ -19,6 +19,15 @@ abstract class ResourceDOAbstract implements ResourceDOInterface, \Iterator, Res
     protected $version;
     protected $author;
 
+    const TOKEN_BASEDIRECTORY = 'basedirectory';
+    const TOKEN_NAMESPACE = 'namespace';
+    const TOKEN_TYPE = 'type';
+    const TOKEN_SHARD_VARIANT = 'shard_variant';
+    const TOKEN_VARIANT = 'variant';
+    const TOKEN_VERSION = 'version';
+    const TOKEN_SHARD_FILENAME = 'shard_filename';
+    const SHARD_SLICE_LENGTH = 3;
+
     /**
      * true if resource file is just created (or should be)
      * @var bool
@@ -90,17 +99,19 @@ abstract class ResourceDOAbstract implements ResourceDOInterface, \Iterator, Res
      */
     public function generateFilePath()
     {
-        return $this->getBaseDirectory()
-        . ($this->getNamespace() ? $this->getNamespace() . DIRECTORY_SEPARATOR : '')
-        . $this->getType() . DIRECTORY_SEPARATOR
-        . $this->getVariant() . DIRECTORY_SEPARATOR
-        . $this->getVersion() . DIRECTORY_SEPARATOR
-        . $this->getUuid() . '.' . $this->getType();
+        $path = '';
+        foreach ($this->getDirectoryTokens() as $token => $slice) {
+            $path .= $slice;
+        }
+        $path .= $this->getUuid() . '.' . $this->getType();
+
+        return $path;
     }
 
     /**
      * Map of the resource directory elements.
-     * For example, you can use it with the strtok() method. Or for routes buildings.
+     * For example, you can use keys with the strtok() method. Or for routes buildings.
+     *
      * @return array
      * @see strtok()
      * @example strtok($relative_path, '/');
@@ -108,10 +119,13 @@ abstract class ResourceDOAbstract implements ResourceDOInterface, \Iterator, Res
     public function getDirectoryTokens()
     {
         return [
-            'namespace',
-            'type',
-            'variant',
-            'version',
+            self::TOKEN_BASEDIRECTORY => $this->getBaseDirectory(),
+            self::TOKEN_NAMESPACE => ($this->getNamespace() ? $this->getNamespace() . DIRECTORY_SEPARATOR : ''),
+            self::TOKEN_TYPE => $this->getType() . DIRECTORY_SEPARATOR,
+            self::TOKEN_SHARD_VARIANT => substr($this->getVariant(), 0, self::SHARD_SLICE_LENGTH) . DIRECTORY_SEPARATOR, // Sharding
+            self::TOKEN_VARIANT => $this->getVariant() . DIRECTORY_SEPARATOR,
+            self::TOKEN_VERSION => $this->getVersion() . DIRECTORY_SEPARATOR,
+            self::TOKEN_SHARD_FILENAME => substr($this->getUuid(), 0, self::SHARD_SLICE_LENGTH) . DIRECTORY_SEPARATOR, // Sharding
         ];
     }
 

@@ -96,7 +96,7 @@ class FindResourceOptionsCommand implements ResourceCommandInterface
             , DIRECTORY_SEPARATOR . $file['dirname']
         );
         $tokens = $resourceDO->getDirectoryTokens();
-        $this->splitDirectoryByTokens($file, $tokens);
+        $this->splitDirectoryByTokens($file, array_keys($tokens));
     }
 
     protected function filterAllowedProperties($value, $key)

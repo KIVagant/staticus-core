@@ -87,25 +87,9 @@ abstract class ResourceImageDO extends ResourceDOAbstract implements ResourceIma
     }
 
     /**
-     * /type/variant/version/[size/][other-type-specified/]uuid.type
-     * /jpg/default/0/0/22af64.jpg
-     * /jpg/user1534/3/0/22af64.jpg
-     * /jpg/fractal/0/30x40/22af64.jpg
-     */
-    public function generateFilePath()
-    {
-        return $this->getBaseDirectory()
-            . ($this->getNamespace() ? $this->getNamespace() . DIRECTORY_SEPARATOR : '')
-            . $this->getType() . DIRECTORY_SEPARATOR
-            . $this->getVariant() . DIRECTORY_SEPARATOR
-            . $this->getVersion() . DIRECTORY_SEPARATOR
-            . $this->getDimension() . DIRECTORY_SEPARATOR
-            . $this->getUuid() . '.' . $this->getType();
-    }
-
-    /**
      * Map of the resource directory elements.
      * For example, you can use it with the strtok() method. Or for routes buildings.
+     *
      * @return array
      * @see strtok()
      * @example strtok($relative_path, '/');
@@ -113,7 +97,7 @@ abstract class ResourceImageDO extends ResourceDOAbstract implements ResourceIma
     public function getDirectoryTokens()
     {
         $tokens = parent::getDirectoryTokens();
-        $tokens[] = static::TOKEN_DIMENSION;
+        $tokens[static::TOKEN_DIMENSION] = $this->getDimension() . DIRECTORY_SEPARATOR;
 
         return $tokens;
     }
