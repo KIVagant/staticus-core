@@ -7,7 +7,6 @@ use Staticus\Resources\ResourceDOInterface;
 
 class DeleteSafetyResourceCommand implements ResourceCommandInterface
 {
-    use ShellFindCommandTrait;
     /**
      * @var ResourceDOInterface
      */
@@ -38,7 +37,7 @@ class DeleteSafetyResourceCommand implements ResourceCommandInterface
         if (is_file($filePath)) {
             // Make backup of the default version
             if (ResourceDOInterface::DEFAULT_VERSION === $version) {
-                $lastVersion = $this->findLastExistsVersion($baseDir, $namespace, $uuid, $type, $variant);
+                $lastVersion = $this->findLastExistsVersion();
 
                 // But only if previous existing version is not the default and not has the same content as deleting
                 if (ResourceDOInterface::DEFAULT_VERSION !== $lastVersion) {
@@ -74,5 +73,15 @@ class DeleteSafetyResourceCommand implements ResourceCommandInterface
         if (!unlink($filePath)) {
             throw new CommandErrorException('The file cannot be removed: ' . $filePath);
         }
+    }
+
+    /**
+     * @return int
+     */
+    protected function findLastVersion()
+    {
+        $command = new FindResourceLastVersionCommand($this->resourceDO, $this->filesystem);
+
+        return $command();
     }
 }
