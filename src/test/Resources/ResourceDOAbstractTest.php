@@ -47,7 +47,7 @@ class ResourceDOAbstractTest extends \PHPUnit_Framework_TestCase
             ->setNamespace('testnamespace')
             ->setType('testtype')
             ->setAuthor('testauthor')
-            ->setBaseDirectory('testbasedir/')
+            ->setBaseDirectory('testbasedir')
             ->setNameAlternative('testnamealternative')
             ->setNew(true)
             ->setRecreate(true)
@@ -151,9 +151,19 @@ class ResourceDOAbstractTest extends \PHPUnit_Framework_TestCase
         $resourceDO = $this->getResourceDO();
         $result = $resourceDO->getBaseDirectory();
         $this->assertEquals('', $result);
-        $model = 'test';
+
+        $model = ''; // Empty
         $resourceDO->setBaseDirectory($model);
         $result = $resourceDO->getBaseDirectory();
+        $this->assertEquals($model, $result);
+
+        $model = 'testbasedir';
+        $resourceDO->setBaseDirectory($model);
+        $result = $resourceDO->getBaseDirectory();
+        $this->assertEquals($model . '/', $result);
+
+        $result = $resourceDO->getFilePath();
+        $model = 'testbasedir/type/def/def/0/d41/d41d8cd98f00b204e9800998ecf8427e.type';
         $this->assertEquals($model, $result);
     }
 

@@ -311,9 +311,14 @@ abstract class ResourceDOAbstract implements ResourceDOInterface, \Iterator, Res
      * @param string $dir
      * @return ResourceDOInterface
      */
-    public function setBaseDirectory($dir)
+    public function setBaseDirectory($dir = '')
     {
-        $this->baseDirectory = (string)$dir;
+        $dir = (string)$dir;
+        $this->baseDirectory = '' !== $dir
+            ? str_replace(DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, $dir . DIRECTORY_SEPARATOR)
+
+            // Avoid set basedir to the root directory '/' if base directory is ommited
+            : $dir;
         $this->setFilePath();
 
         return $this;
