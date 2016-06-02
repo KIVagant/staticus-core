@@ -28,20 +28,7 @@ class BackupResourceCommand implements ResourceCommandInterface
     public function __invoke($lastVersion = null)
     {
         if (null === $lastVersion) {
-            $command = new FindResourceOptionsCommand($this->resourceDO, $this->filesystem);
-            $result = $command([
-                'version',
-            ]);
-            $lastVersion = 0;
-            if (!empty($result)) {
-                array_filter($result, function ($found) use (&$lastVersion) {
-                    $found = (int)$found['version'];
-                    $lastVersion = $found > $lastVersion
-                        ? $found
-                        : $lastVersion;
-                    return false;
-                });
-            }
+            $lastVersion = $this->findLastVersion();
         }
 
         return $this->backupResource($lastVersion + 1);
@@ -55,6 +42,16 @@ class BackupResourceCommand implements ResourceCommandInterface
         $backupResourceDO = clone $this->resourceDO;
         $backupResourceDO->setVersion($newVersion);
         $command = new CopyResourceCommand($this->resourceDO, $backupResourceDO, $this->filesystem);
+
+        return $command();
+    }
+
+    /**
+     * @return int
+     */
+    protected function findLastVersion()
+    {
+        $command = new FindResourceLastVersionCommand($this->resourceDO, $this->filesystem);
 
         return $command();
     }
