@@ -10,15 +10,6 @@ use Zend\Permissions\Acl\Resource\ResourceInterface;
 abstract class ResourceDOAbstract implements ResourceDOInterface, \Iterator, ResourceInterface
 {
     const TYPE = '';
-    protected $uuid;
-    protected $namespace;
-    protected $name;
-    protected $nameAlternative;
-    protected $type = self::TYPE;
-    protected $variant;
-    protected $version;
-    protected $author;
-
     const TOKEN_BASEDIRECTORY = 'basedirectory';
     const TOKEN_NAMESPACE = 'namespace';
     const TOKEN_TYPE = 'type';
@@ -27,6 +18,15 @@ abstract class ResourceDOAbstract implements ResourceDOInterface, \Iterator, Res
     const TOKEN_VERSION = 'version';
     const TOKEN_SHARD_FILENAME = 'shard_filename';
     const SHARD_SLICE_LENGTH = 3;
+
+    protected $uuid;
+    protected $namespace = '';
+    protected $name = '';
+    protected $nameAlternative = '';
+    protected $type = self::TYPE;
+    protected $variant = self::DEFAULT_VARIANT;
+    protected $version = self::DEFAULT_VERSION;
+    protected $author = '';
 
     /**
      * true if resource file is just created (or should be)
@@ -44,8 +44,8 @@ abstract class ResourceDOAbstract implements ResourceDOInterface, \Iterator, Res
      * Path to base directory (without dynamic path part)
      * @var string
      */
-    protected $baseDirectory;
-    protected $filePath;
+    protected $baseDirectory = '';
+    protected $filePath = '';
 
     /**
      * List of object properties that should not be iterable (denied for the usage in response)
@@ -66,12 +66,14 @@ abstract class ResourceDOAbstract implements ResourceDOInterface, \Iterator, Res
         $this->uuid = '';
         $this->name = '';
         $this->nameAlternative = '';
+        $this->namespace = '';
         $this->type = static::TYPE;
         $this->variant = self::DEFAULT_VARIANT;
         $this->version = self::DEFAULT_VERSION;
         $this->author = '';
         $this->baseDirectory = '';
         $this->filePath = '';
+        $this->new = false;
         $this->recreate = false;
 
         return $this;
@@ -174,7 +176,7 @@ abstract class ResourceDOAbstract implements ResourceDOInterface, \Iterator, Res
      * @param string $namespace
      * @return ResourceDOInterface
      */
-    public function setNamespace($namespace)
+    public function setNamespace($namespace = '')
     {
         $this->namespace = (string)$namespace;
         $this->setUuid();

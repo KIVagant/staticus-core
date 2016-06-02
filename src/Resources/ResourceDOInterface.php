@@ -119,8 +119,8 @@ interface ResourceDOInterface
 
     /**
      * Map of the resource directory elements
-     * For example, you can use it with the strtok() method
-     * @return array
+     * For example, you can use keys with the strtok() method
+     * @return array [token => value, ...]
      * @see strtok()
      * @see \Staticus\Resources\Commands\FindResourceOptionsCommand::splitDirectoryByTokens
      * @example strtok($relative_path, '/');
