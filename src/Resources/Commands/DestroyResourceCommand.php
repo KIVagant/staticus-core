@@ -51,4 +51,34 @@ class DestroyResourceCommand implements ResourceCommandInterface
 
         return $this->resourceDO;
     }
+
+    /**
+     * @param $baseDir
+     * @param $namespace
+     * @param $uuid
+     * @param $type
+     * @param string $variant
+     * @param int $version
+     * @return string
+     * @deprecated
+     * @todo: replace to FlySystem
+     */
+    protected function getShellFindCommand($baseDir, $namespace, $uuid, $type, $variant = ResourceDOInterface::DEFAULT_VARIANT, $version = ResourceDOInterface::DEFAULT_VERSION)
+    {
+        if ($namespace) {
+            $namespace .= DIRECTORY_SEPARATOR;
+        }
+        $command = 'find ';
+        if ($version !== ResourceDOInterface::DEFAULT_VERSION) {
+            $command .= $baseDir . $namespace . $type . DIRECTORY_SEPARATOR . $variant . DIRECTORY_SEPARATOR . $version . DIRECTORY_SEPARATOR;
+        } elseif ($variant !== ResourceDOInterface::DEFAULT_VARIANT) {
+            $command .= $baseDir . $namespace . $type . DIRECTORY_SEPARATOR . $variant . DIRECTORY_SEPARATOR;
+        } else {
+            $command .= $baseDir . $namespace . $type . DIRECTORY_SEPARATOR;
+        }
+
+        $command .= ' -type f -name ' . $uuid . '.' . $type;
+
+        return $command;
+    }
 }
