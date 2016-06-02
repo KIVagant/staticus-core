@@ -6,7 +6,6 @@ use Staticus\Resources\ResourceDOInterface;
 
 class BackupResourceCommand implements ResourceCommandInterface
 {
-    use ShellFindCommandTrait;
     /**
      * @var ResourceDOInterface
      */
@@ -29,13 +28,22 @@ class BackupResourceCommand implements ResourceCommandInterface
     public function __invoke($lastVersion = null)
     {
         if (null === $lastVersion) {
-            $uuid = $this->resourceDO->getUuid();
-            $type = $this->resourceDO->getType();
-            $variant = $this->resourceDO->getVariant();
-            $baseDir = $this->resourceDO->getBaseDirectory();
-            $namespace = $this->resourceDO->getNamespace();
-            $lastVersion = $this->findLastExistsVersion($baseDir, $namespace, $uuid, $type, $variant);
+            $command = new FindResourceOptionsCommand($this->resourceDO, $this->filesystem);
+            $result = $command([
+                'version',
+            ]);
+            $lastVersion = 0;
+            if (!empty($result)) {
+                array_filter($result, function ($found) use (&$lastVersion) {
+                    $found = (int)$found['version'];
+                    $lastVersion = $found > $lastVersion
+                        ? $found
+                        : $lastVersion;
+                    return false;
+                });
+            }
         }
+
         return $this->backupResource($lastVersion + 1);
     }
 
