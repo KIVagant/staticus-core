@@ -86,7 +86,7 @@ abstract class ResourceDOAbstract implements ResourceDOInterface, \Iterator, Res
     }
     protected function setUuid()
     {
-        $this->uuid = md5($this->name);
+        $this->uuid = md5($this->name . $this->nameAlternative);
     }
 
     protected function setFilePath()
@@ -197,7 +197,7 @@ abstract class ResourceDOAbstract implements ResourceDOInterface, \Iterator, Res
      * @param string $nameAlternative
      * @return ResourceDOInterface
      */
-    public function setNameAlternative($nameAlternative)
+    public function setNameAlternative($nameAlternative = '')
     {
         $this->nameAlternative = (string)$nameAlternative;
         $this->setUuid();
