@@ -33,5 +33,8 @@
     "psr-4": {
       "Staticus\\": "src/"
     }
+  },
+  "require-dev": {
+    "league/flysystem-memory": "^1.0"
   }
 }

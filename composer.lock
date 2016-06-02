@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dbc9877b839a041d3cc3ea8145fffd1e",
-    "content-hash": "60f6aa09ef9b1596293c19221f810865",
+    "hash": "5c03969914e57c02a4c82584acd4204e",
+    "content-hash": "dd5746af6aa6675b70c4b2f881629523",
     "packages": [
         {
             "name": "aura/di",
@@ -1135,7 +1135,57 @@
             "time": "2016-03-24 22:10:30"
         }
     ],
-    "packages-dev": [],
+    "packages-dev": [
+        {
+            "name": "league/flysystem-memory",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/flysystem-memory.git",
+                "reference": "46df9a22e2854ea919ccafb50c3306bdf309fbe8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-memory/zipball/46df9a22e2854ea919ccafb50c3306bdf309fbe8",
+                "reference": "46df9a22e2854ea919ccafb50c3306bdf309fbe8",
+                "shasum": ""
+            },
+            "require": {
+                "league/flysystem": "~1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Flysystem\\Memory\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Leppanen",
+                    "email": "chris.leppanen@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "An in-memory adapter for Flysystem.",
+            "homepage": "http://github.com/twistor/flysystem-memory-adapter",
+            "keywords": [
+                "league"
+            ],
+            "time": "2015-06-26 18:25:54"
+        }
+    ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
