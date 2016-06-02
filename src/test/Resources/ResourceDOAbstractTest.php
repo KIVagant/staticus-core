@@ -206,9 +206,14 @@ class ResourceDOAbstractTest extends \PHPUnit_Framework_TestCase
         $resourceDO = $this->getResourceDO();
         $result = $resourceDO->getVariant();
         $this->assertEquals('def', $result);
-        $model = 'test';
+
+        $model = 'testvariant';
         $resourceDO->setVariant($model);
         $result = $resourceDO->getVariant();
+        $this->assertEquals($model, $result);
+
+        $result = $resourceDO->getFilePath();
+        $model = 'type/tes/testvariant/0/d41/d41d8cd98f00b204e9800998ecf8427e.type';
         $this->assertEquals($model, $result);
     }
 
@@ -217,9 +222,14 @@ class ResourceDOAbstractTest extends \PHPUnit_Framework_TestCase
         $resourceDO = $this->getResourceDO();
         $result = $resourceDO->getVersion();
         $this->assertEquals(0, $result);
+
         $model = 2;
         $resourceDO->setVersion($model);
         $result = $resourceDO->getVersion();
+        $this->assertEquals($model, $result);
+
+        $result = $resourceDO->getFilePath();
+        $model = 'type/def/def/2/d41/d41d8cd98f00b204e9800998ecf8427e.type';
         $this->assertEquals($model, $result);
     }
 
