@@ -2,6 +2,7 @@
 namespace Staticus\Resources\Commands;
 
 use League\Flysystem\FilesystemInterface;
+use Staticus\Exceptions\ErrorException;
 use Staticus\Resources\ResourceDOInterface;
 
 /** @noinspection PropertyCanBeStaticInspection */
@@ -51,6 +52,10 @@ class FindResourceOptionsCommand implements ResourceCommandInterface
         $filesystem = $this->filesystem;
         $uuid = $resourceDO->getUuid();
         $type = $resourceDO->getType();
+        $name = $resourceDO->getName();
+        if (!$name || !$type) {
+            throw new ErrorException('Can not look for options: resource is empty');
+        }
         $basename = $resourceDO->getBaseDirectory();
         $namespace = $resourceDO->getNamespace();
         $path = $basename
@@ -84,7 +89,7 @@ class FindResourceOptionsCommand implements ResourceCommandInterface
     protected function hydrateElementFile(&$file, $key, $args)
     {
         if (!array_key_exists('resourceDO', $args) || !$args['resourceDO'] instanceof ResourceDOInterface) {
-            throw new \ErrorException('Method expects ResourceDO in arguments');
+            throw new ErrorException('Method expects ResourceDO in arguments');
         }
 
         /** @var ResourceDOInterface $resourceDO */
