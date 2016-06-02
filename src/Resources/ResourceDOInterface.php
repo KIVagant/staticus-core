@@ -7,6 +7,7 @@ namespace Staticus\Resources;
  */
 interface ResourceDOInterface
 {
+    const DEFAULT_BASE_DIRECTORY = '';
     const DEFAULT_VARIANT = 'def';
     const DEFAULT_VERSION = 0;
     const NAMESPACE_REG_SYMBOLS = '\w\d\-\'_\/';

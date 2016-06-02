@@ -44,7 +44,7 @@ abstract class ResourceDOAbstract implements ResourceDOInterface, \Iterator, Res
      * Path to base directory (without dynamic path part)
      * @var string
      */
-    protected $baseDirectory = '';
+    protected $baseDirectory = self::DEFAULT_BASE_DIRECTORY;
     protected $filePath = '';
 
     /**
@@ -71,7 +71,7 @@ abstract class ResourceDOAbstract implements ResourceDOInterface, \Iterator, Res
         $this->variant = self::DEFAULT_VARIANT;
         $this->version = self::DEFAULT_VERSION;
         $this->author = '';
-        $this->baseDirectory = '';
+        $this->baseDirectory = self::DEFAULT_BASE_DIRECTORY;
         $this->filePath = '';
         $this->new = false;
         $this->recreate = false;
@@ -311,7 +311,7 @@ abstract class ResourceDOAbstract implements ResourceDOInterface, \Iterator, Res
      * @param string $dir
      * @return ResourceDOInterface
      */
-    public function setBaseDirectory($dir = '')
+    public function setBaseDirectory($dir = self::DEFAULT_BASE_DIRECTORY)
     {
         $dir = (string)$dir;
         $this->baseDirectory = '' !== $dir
