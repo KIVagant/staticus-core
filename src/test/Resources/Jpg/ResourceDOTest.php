@@ -73,6 +73,10 @@ class ResourceDOTest extends \PHPUnit_Framework_TestCase
         $resourceDO->setWidth($model);
         $result = $resourceDO->getWidth();
         $this->assertEquals($model, $result);
+
+        $result = $resourceDO->getFilePath();
+        $model = 'jpg/def/def/0/d41/0/d41d8cd98f00b204e9800998ecf8427e.jpg';
+        $this->assertEquals($model, $result);
     }
 
     public function testHeight()
@@ -83,6 +87,10 @@ class ResourceDOTest extends \PHPUnit_Framework_TestCase
         $model = 30;
         $resourceDO->setHeight($model);
         $result = $resourceDO->getHeight();
+        $this->assertEquals($model, $result);
+
+        $result = $resourceDO->getFilePath();
+        $model = 'jpg/def/def/0/d41/0/d41d8cd98f00b204e9800998ecf8427e.jpg';
         $this->assertEquals($model, $result);
     }
 
@@ -96,7 +104,12 @@ class ResourceDOTest extends \PHPUnit_Framework_TestCase
         $resourceDO->setWidth($model);
         $resourceDO->setHeight($model2);
         $result = $resourceDO->getDimension();
-        $this->assertEquals($model . 'x' . $model2, $result);
+        $modelDimension = $model . 'x' . $model2;
+        $this->assertEquals($modelDimension, $result);
+
+        $result = $resourceDO->getFilePath();
+        $model = 'jpg/def/def/0/d41/' . $modelDimension . '/d41d8cd98f00b204e9800998ecf8427e.jpg';
+        $this->assertEquals($model, $result);
     }
 
     public function testCrop()
