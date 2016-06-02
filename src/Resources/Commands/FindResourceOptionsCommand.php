@@ -3,6 +3,7 @@ namespace Staticus\Resources\Commands;
 
 use League\Flysystem\FilesystemInterface;
 use Staticus\Exceptions\ErrorException;
+use Staticus\Resources\ResourceDOAbstract;
 use Staticus\Resources\ResourceDOInterface;
 
 /** @noinspection PropertyCanBeStaticInspection */
@@ -119,7 +120,10 @@ class FindResourceOptionsCommand implements ResourceCommandInterface
     {
         $split = null;
         foreach ($tokens as $token) {
-            if ('namespace' === $token) {
+            if (ResourceDOAbstract::TOKEN_BASEDIRECTORY === $token) {
+                continue;
+            }
+            if (ResourceDOAbstract::TOKEN_NAMESPACE === $token) {
                 continue;
             }
             $split = null === $split
