@@ -7,6 +7,8 @@ use Staticus\Resources\File\ResourceDO;
 
 class DeleteSafetyResourceCommandTest extends \PHPUnit_Framework_TestCase
 {
+    use AddWrongFilesToDiskTrait;
+
     /**
      * @var ResourceDO
      */
@@ -127,5 +129,66 @@ class DeleteSafetyResourceCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->filesystem->has($resourceDO->getFilePath()));
         $this->assertTrue($this->filesystem->has($resourceDOAnother->getFilePath()));
         $this->assertTrue($this->filesystem->has($resourceDOBackup->getFilePath()));
+    }
+
+    public function testDeleteResourceVersionButLeaveOther()
+    {
+        $resourceDO = $this->getResourceDOMock();
+        $resourceDO->setVersion(2);
+        $this->filesystem->put($resourceDO->getFilePath(), '');
+        $this->addWrongFilesToDisk($resourceDO, '');
+
+        $model = $this->filesystem->listContents('/', true);
+        unset($model[30]);
+
+        $command = $this->getCommand($resourceDO);
+        $result = $command();
+        $this->assertEquals($resourceDO, $result);
+        $this->assertFalse($this->filesystem->has($resourceDO->getFilePath()));
+        $result = $this->filesystem->listContents('/', true);
+        unset($result[32]['timestamp']);
+        $this->assertEquals($model, $result);
+    }
+
+    public function testDeleteResourceButLeaveOther()
+    {
+        $resourceDO = $this->getResourceDOMock();
+        $this->filesystem->put($resourceDO->getFilePath(), '');
+        $this->addWrongFilesToDisk($resourceDO, '');
+
+        $model = $this->filesystem->listContents('/', true);
+
+        $model[30] = [
+            'type' => 'dir',
+            'path' => 'testBase/testType/def/def/1',
+            'dirname' => 'testBase/testType/def/def',
+            'basename' => '1',
+            'filename' => '1',
+        ];
+        $model[31] = [
+            'type' => 'dir',
+            'path' => 'testBase/testType/def/def/1/c9f',
+            'dirname' => 'testBase/testType/def/def/1',
+            'basename' => 'c9f',
+            'filename' => 'c9f',
+        ];
+        $model[32] = [
+            'type' => 'file',
+            'visibility' => 'public',
+            'size' => 0,
+            'path' => 'testBase/testType/def/def/1/c9f/c9f7e81bafc626421e04b573022e6203.testType',
+            'dirname' => 'testBase/testType/def/def/1/c9f',
+            'basename' => 'c9f7e81bafc626421e04b573022e6203.testType',
+            'extension' => 'testType',
+            'filename' => 'c9f7e81bafc626421e04b573022e6203',
+        ];
+
+        $command = $this->getCommand($resourceDO);
+        $result = $command();
+        $this->assertEquals($resourceDO, $result);
+        $this->assertFalse($this->filesystem->has($resourceDO->getFilePath()));
+        $result = $this->filesystem->listContents('/', true);
+        unset($result[32]['timestamp']);
+        $this->assertEquals($model, $result);
     }
 }
