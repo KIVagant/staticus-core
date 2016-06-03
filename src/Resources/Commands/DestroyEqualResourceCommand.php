@@ -2,6 +2,7 @@
 namespace Staticus\Resources\Commands;
 
 use League\Flysystem\FilesystemInterface;
+use Staticus\Resources\Exceptions\CommandErrorException;
 use Staticus\Resources\ResourceDOInterface;
 
 class DestroyEqualResourceCommand implements ResourceCommandInterface
@@ -21,8 +22,8 @@ class DestroyEqualResourceCommand implements ResourceCommandInterface
     protected $filesystem;
 
     /**
-     * @param ResourceDOInterface $originResourceDO
-     * @param ResourceDOInterface $suspectResourceDO This resource will be deleted, if equal to $originResourceDO
+     * @param ResourceDOInterface $originResourceDO This is a model resource for comparing
+     * @param ResourceDOInterface $suspectResourceDO This resource will be deleted, if it's equal to $originResourceDO
      * @param FilesystemInterface $filesystem
      */
     public function __construct(ResourceDOInterface $originResourceDO, ResourceDOInterface $suspectResourceDO, FilesystemInterface $filesystem)
@@ -33,7 +34,7 @@ class DestroyEqualResourceCommand implements ResourceCommandInterface
     }
 
     /**
-     * @return ResourceDOInterface
+     * @return ResourceDOInterface SuspectResource if it have been deleted or OriginResource if the Suspect is not equal
      */
     public function __invoke()
     {
@@ -41,15 +42,18 @@ class DestroyEqualResourceCommand implements ResourceCommandInterface
         $suspectName = $this->suspectResourceDO->getName();
         $originType = $this->originResourceDO->getType();
         $suspectType = $this->suspectResourceDO->getType();
-        if (!$originName || !$originType) {
-            throw new CommandErrorException('Invalid destroy equal request: the origin resource is empty');
-        }
-        if (!$suspectName || !$suspectType) {
-            throw new CommandErrorException('Invalid destroy equal request: the suspect resource is empty');
-        }
-
         $originFilePath = $this->originResourceDO->getFilePath();
         $suspectFilePath = $this->suspectResourceDO->getFilePath();
+
+        if (!$originName || !$originType) {
+            throw new CommandErrorException('Cannot destroy equal resource: the origin resource is empty');
+        }
+        if (!$suspectName || !$suspectType) {
+            throw new CommandErrorException('Cannot destroy equal resource: the suspect resource is empty');
+        }
+        if ($originFilePath === $suspectFilePath) {
+            throw new CommandErrorException('Cannot destroy equal resource: Origin and Suspect have same paths');
+        }
 
         // Unfortunately, this condition can not always work fine.
         // Because some Middlewares can compress, resize etc. the resource that saved before
