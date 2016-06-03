@@ -6,11 +6,10 @@ use League\Flysystem\Memory\MemoryAdapter;
 use Staticus\Resources\File\ResourceDO;
 use Staticus\Resources\ResourceDOAbstract;
 
-require_once 'AddWrongFilesToDiskTrait.php';
+require_once 'AddWrongFilesToDiskHelper.php';
 
 class FindResourceOptionsCommandTest extends \PHPUnit_Framework_TestCase
 {
-    use AddWrongFilesToDiskTrait;
     const BASE_DIR = '/this/is/a/test';
 
     /**
@@ -21,12 +20,17 @@ class FindResourceOptionsCommandTest extends \PHPUnit_Framework_TestCase
      * @var Filesystem
      */
     protected $filesystem;
+    /**
+     * @var AddWrongFilesToDiskHelper
+     */
+    protected $wrongFiles;
 
     protected function setUp()
     {
         parent::setUp();
         $this->resourceDO = new ResourceDO();
         $this->filesystem = new Filesystem(new MemoryAdapter());
+        $this->wrongFiles = new AddWrongFilesToDiskHelper($this->filesystem, $this);
     }
 
     /**
@@ -100,7 +104,7 @@ class FindResourceOptionsCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->filesystem->has($filePath));
 
         // SAVE WRONG FILES
-        $this->addWrongFilesToDisk($resourceDO, $content);
+        $this->wrongFiles->create($resourceDO, $content);
 
         $modelBaseDir = substr(self::BASE_DIR, 1, 100);
         $shardVariant = substr($variant, 0, ResourceDOAbstract::SHARD_SLICE_LENGTH);

@@ -5,10 +5,9 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\Memory\MemoryAdapter;
 use Staticus\Resources\File\ResourceDO;
 
+require_once 'AddWrongFilesToDiskHelper.php';
 class DestroyResourceCommandTest extends \PHPUnit_Framework_TestCase
 {
-    use AddWrongFilesToDiskTrait;
-
     /**
      * @var ResourceDO
      */
@@ -17,12 +16,18 @@ class DestroyResourceCommandTest extends \PHPUnit_Framework_TestCase
      * @var Filesystem
      */
     protected $filesystem;
+    /**
+     * @var AddWrongFilesToDiskHelper
+     */
+    protected $wrongFiles;
 
     protected function setUp()
     {
         parent::setUp();
         $this->resourceDO = new ResourceDO();
         $this->filesystem = new Filesystem(new MemoryAdapter());
+        $this->wrongFiles = new AddWrongFilesToDiskHelper($this->filesystem, $this);
+
     }
 
     /**
@@ -89,9 +94,9 @@ class DestroyResourceCommandTest extends \PHPUnit_Framework_TestCase
     public function testDestroyResourceByPathButLeaveOthers()
     {
         $resourceDO = $this->getResourceDOMock();
-        $this->addWrongFilesToDisk($resourceDO, '');
+        $this->wrongFiles->create($resourceDO);
         $this->testDestroyResourceByPath();
-        $this->assertWrongFilesIsStillHere($resourceDO);
+        $this->wrongFiles->assertExist($resourceDO);
     }
 
     public function testDestroyResourceVersion()
@@ -130,9 +135,9 @@ class DestroyResourceCommandTest extends \PHPUnit_Framework_TestCase
     public function testDestroyResourceVersionButLeaveOthers()
     {
         $resourceDO = $this->getResourceDOMock();
-        $this->addWrongFilesToDisk($resourceDO, '');
+        $this->wrongFiles->create($resourceDO);
         $this->testDestroyResourceVersion();
-        $this->assertWrongFilesIsStillHere($resourceDO);
+        $this->wrongFiles->assertExist($resourceDO);
     }
 
     public function testDestroyResourceVariant()
@@ -178,9 +183,9 @@ class DestroyResourceCommandTest extends \PHPUnit_Framework_TestCase
     public function testDestroyResourceVariantButLeaveOthers()
     {
         $resourceDO = $this->getResourceDOMock();
-        $this->addWrongFilesToDisk($resourceDO, '');
+        $this->wrongFiles->create($resourceDO);
         $this->testDestroyResourceVariant();
-        $this->assertWrongFilesIsStillHere($resourceDO);
+        $this->wrongFiles->assertExist($resourceDO);
     }
 
     public function testDestroyResourceAllVariantsAndVersions()
@@ -225,8 +230,8 @@ class DestroyResourceCommandTest extends \PHPUnit_Framework_TestCase
     public function testDestroyResourceAllVariantsAndVersionsButLeaveOthers()
     {
         $resourceDO = $this->getResourceDOMock();
-        $this->addWrongFilesToDisk($resourceDO, '');
+        $this->wrongFiles->create($resourceDO);
         $this->testDestroyResourceAllVariantsAndVersions();
-        $this->assertWrongFilesIsStillHere($resourceDO);
+        $this->wrongFiles->assertExist($resourceDO);
     }
 }

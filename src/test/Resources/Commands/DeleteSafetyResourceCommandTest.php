@@ -5,9 +5,9 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\Memory\MemoryAdapter;
 use Staticus\Resources\File\ResourceDO;
 
+require_once 'AddWrongFilesToDiskHelper.php';
 class DeleteSafetyResourceCommandTest extends \PHPUnit_Framework_TestCase
 {
-    use AddWrongFilesToDiskTrait;
 
     /**
      * @var ResourceDO
@@ -17,12 +17,17 @@ class DeleteSafetyResourceCommandTest extends \PHPUnit_Framework_TestCase
      * @var Filesystem
      */
     protected $filesystem;
+    /**
+     * @var AddWrongFilesToDiskHelper
+     */
+    protected $wrongFiles;
 
     protected function setUp()
     {
         parent::setUp();
         $this->resourceDO = new ResourceDO();
         $this->filesystem = new Filesystem(new MemoryAdapter());
+        $this->wrongFiles = new AddWrongFilesToDiskHelper($this->filesystem, $this);
     }
 
     /**
@@ -136,7 +141,7 @@ class DeleteSafetyResourceCommandTest extends \PHPUnit_Framework_TestCase
         $resourceDO = $this->getResourceDOMock();
         $resourceDO->setVersion(2);
         $this->filesystem->put($resourceDO->getFilePath(), '');
-        $this->addWrongFilesToDisk($resourceDO, '');
+        $this->wrongFiles->create($resourceDO);
 
         $model = $this->filesystem->listContents('/', true);
         unset($model[30]);
@@ -153,7 +158,7 @@ class DeleteSafetyResourceCommandTest extends \PHPUnit_Framework_TestCase
     {
         $resourceDO = $this->getResourceDOMock();
         $this->filesystem->put($resourceDO->getFilePath(), '');
-        $this->addWrongFilesToDisk($resourceDO, '');
+        $this->wrongFiles->create($resourceDO);
 
         $model = $this->filesystem->listContents('/', true);
 

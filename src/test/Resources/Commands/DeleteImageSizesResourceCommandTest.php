@@ -6,11 +6,10 @@ use League\Flysystem\Memory\MemoryAdapter;
 use Staticus\Resources\Image\ResourceImageDO;
 use Staticus\Resources\Png\ResourceDO;
 
-require_once 'AddWrongFilesToDiskTrait.php';
+require_once 'AddWrongFilesToDiskHelper.php';
 
 class DeleteImageSizesResourceCommandTest extends \PHPUnit_Framework_TestCase
 {
-    use AddWrongFilesToDiskTrait;
     /**
      * @var ResourceImageDO
      */
@@ -19,12 +18,17 @@ class DeleteImageSizesResourceCommandTest extends \PHPUnit_Framework_TestCase
      * @var Filesystem
      */
     protected $filesystem;
+    /**
+     * @var AddWrongFilesToDiskHelper
+     */
+    protected $wrongFiles;
 
     protected function setUp()
     {
         parent::setUp();
         $this->resourceDO = new ResourceDO();
         $this->filesystem = new Filesystem(new MemoryAdapter());
+        $this->wrongFiles = new AddWrongFilesToDiskHelper($this->filesystem, $this);
     }
 
     /**
@@ -94,10 +98,10 @@ class DeleteImageSizesResourceCommandTest extends \PHPUnit_Framework_TestCase
         $yetAnotherWrongDO = clone $resourceDO;
         $yetAnotherWrongDO->setWidth(998);
         $yetAnotherWrongDO->setHeight(999);
-        $this->addWrongFilesToDisk($resourceDO, 'Wrong1');
-        $this->addWrongFilesToDisk($resourceDOSize10x11, 'Wrong2');
-        $this->addWrongFilesToDisk($resourceDOSize20x21, 'Wrong3');
-        $this->addWrongFilesToDisk($yetAnotherWrongDO, 'Wrong4');
+        $this->wrongFiles->create($resourceDO, 'Wrong1');
+        $this->wrongFiles->create($resourceDOSize10x11, 'Wrong2');
+        $this->wrongFiles->create($resourceDOSize20x21, 'Wrong3');
+        $this->wrongFiles->create($yetAnotherWrongDO, 'Wrong4');
 
         $modelFiles = $this->filesystem->listContents('/', true);
 
