@@ -1,5 +1,5 @@
 <phpunit
-        bootstrap="./src/test/bootstrap.php" colors="true">
+        bootstrap="./vendor/autoload.php" colors="true">
     <testsuites>
         <testsuite name="StaticusCore">
             <directory>./src/test</directory>
