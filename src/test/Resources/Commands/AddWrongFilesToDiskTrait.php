@@ -43,4 +43,32 @@ trait AddWrongFilesToDiskTrait
         $this->filesystem->put($filePath, $content);
         $this->assertTrue($this->filesystem->has($filePath));
     }
+
+    protected function assertWrongFilesIsStillHere($resourceDO)
+    {
+        $resourceDO = clone $resourceDO;
+        $resourceDO->setName('another');
+        $filePath = $resourceDO->getFilePath();
+        $this->assertTrue($this->filesystem->has($filePath));
+
+        $resourceDO = clone $resourceDO;
+        $resourceDO->setNameAlternative('another');
+        $filePath = $resourceDO->getFilePath();
+        $this->assertTrue($this->filesystem->has($filePath));
+
+        $resourceDO = clone $resourceDO;
+        $resourceDO->setBaseDirectory('another');
+        $filePath = $resourceDO->getFilePath();
+        $this->assertTrue($this->filesystem->has($filePath));
+
+        $resourceDO = clone $resourceDO;
+        $resourceDO->setNamespace('another');
+        $filePath = $resourceDO->getFilePath();
+        $this->assertTrue($this->filesystem->has($filePath));
+
+        $resourceDO = clone $resourceDO;
+        $resourceDO->setType('wrong-type');
+        $filePath = $resourceDO->getFilePath();
+        $this->assertTrue($this->filesystem->has($filePath));
+    }
 }
