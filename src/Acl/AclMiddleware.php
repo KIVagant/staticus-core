@@ -54,28 +54,28 @@ class AclMiddleware implements MiddlewareInterface
 
         if (
             // User have access to this type of resources regardless namespaces
-            $this->isAllowed($AclResourceCommon, $action, '')
+            $this->isAllowedForUser($AclResourceCommon, $action, '')
 
             // User have access to this unique resource regardless namespaces
-            || $this->isAllowed($AclResourceUnique, $action, '')
+            || $this->isAllowedForUser($AclResourceUnique, $action, '')
 
             // User have access to this resource type in common namespace
             || (
                 !$resourceNamespace
-                && $this->isAllowed($AclResourceCommon, $action, ResourceDOInterface::NAMESPACES_WILDCARD)
+                && $this->isAllowedForUser($AclResourceCommon, $action, ResourceDOInterface::NAMESPACES_WILDCARD)
             )
 
             // User have access to this resource type in concrete selected namespace
             || (
                 $resourceNamespace
-                && $this->isAllowed($AclResourceCommon, $action, $resourceNamespace)
+                && $this->isAllowedForUser($AclResourceCommon, $action, $resourceNamespace)
             )
             || (
                 // This is a user home namespace
                 $resourceNamespace === $userNamespace
 
                 // User have access to the current action in his own namespace
-                && $this->isAllowed($AclResourceCommon, $action, UserInterface::NAMESPACES_WILDCARD)
+                && $this->isAllowedForUser($AclResourceCommon, $action, UserInterface::NAMESPACES_WILDCARD)
             )
             || (
                 // This is an another user namespace
@@ -149,7 +149,7 @@ class AclMiddleware implements MiddlewareInterface
         return $action;
     }
 
-    protected function isAllowed($aclResource, $action, $namespace = '')
+    protected function isAllowedForUser($aclResource, $action, $namespace = '')
     {
         if (!$this->service->acl()->hasResource($namespace . $aclResource)) {
 
