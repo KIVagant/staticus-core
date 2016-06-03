@@ -7,7 +7,6 @@ use Staticus\Resources\ResourceDOInterface;
 
 class DestroyResourceCommand implements ResourceCommandInterface
 {
-    use ShellFindCommandTrait;
     /**
      * @var ResourceDOInterface
      */
