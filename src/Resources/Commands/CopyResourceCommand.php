@@ -27,15 +27,31 @@ class CopyResourceCommand implements ResourceCommandInterface
         $this->newResourceDO = $newResourceDO;
         $this->filesystem = $filesystem;
     }
-    public function __invoke()
+
+    /**
+     * @param bool $replace Replace exist file or just do nothing
+     * @return ResourceDOInterface
+     * @throws CommandErrorException
+     */
+    public function __invoke($replace = false)
     {
+        if (!$this->originResourceDO->getName() || !$this->originResourceDO->getType()) {
+            throw new CommandErrorException('Source resource cannot be empty');
+        }
+        if (!$this->newResourceDO->getName() || !$this->newResourceDO->getType()) {
+            throw new CommandErrorException('Destination resource cannot be empty');
+        }
         $originPath = $this->originResourceDO->getFilePath();
         $newPath = $this->newResourceDO->getFilePath();
+        if ($originPath === $newPath) {
+            throw new CommandErrorException('Source and destination paths is equal');
+        }
         if (!$this->filesystem->has($originPath)) {
             throw new CommandErrorException('Origin file is not exists: ' . $originPath);
         }
-        if (!$this->filesystem->has($newPath)) {
-            $this->copyFile($originPath, $newPath);
+        $exists = $this->filesystem->has($newPath);
+        if (!$exists || $replace) {
+            $this->copyFile($originPath, $newPath, $exists && $replace);
 
             return $this->newResourceDO;
         }
@@ -43,11 +59,14 @@ class CopyResourceCommand implements ResourceCommandInterface
         return $this->originResourceDO;
     }
 
-    protected function copyFile($fromFullPath, $toFullPath)
+    protected function copyFile($fromFullPath, $toFullPath, $replace = false)
     {
         $this->createDirectory(dirname($toFullPath));
+        if ($replace) {
+            $this->filesystem->delete($toFullPath);
+        }
         if (!$this->filesystem->copy($fromFullPath, $toFullPath)) {
-            throw new CommandErrorException('File cannot be copied to the default path ' . $toFullPath);
+            throw new CommandErrorException('File cannot be copied to the path ' . $toFullPath);
         }
     }
 
