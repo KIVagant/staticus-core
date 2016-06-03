@@ -35,6 +35,7 @@ class AuthSessionMiddleware implements MiddlewareInterface
         callable $next = null
     )
     {
+        /** @link http://framework.zend.com/manual/current/en/modules/zend.authentication.intro.html */
         if (array_key_exists('Zend_Auth', $_SESSION)) {
 
             /** @var \Zend\Stdlib\ArrayObject $auth */

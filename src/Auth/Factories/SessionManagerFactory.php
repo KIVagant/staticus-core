@@ -19,15 +19,19 @@ class SessionManagerFactory
     {
         $sessionConfig = new SessionConfig();
         $sessionConfig->setOptions($this->config['options']);
-        $saveHandler  = new Redis(
-            $this->config['redis']['host'],
-            $this->config['redis']['port'],
-            $this->config['redis']['password']
-        );
-
         $sessionManager = new SessionManager($sessionConfig);
-        $sessionManager->setSaveHandler($saveHandler);
-        $sessionManager->start();
+        if (class_exists('Redis')) {
+            $saveHandler  = new Redis(
+                $this->config['redis']['host'],
+                $this->config['redis']['port'],
+                $this->config['redis']['password']
+            );
+            $sessionManager->setSaveHandler($saveHandler);
+            $sessionManager->start();
+        } else {
+            trigger_error('Redis extension is not found. '
+                . \Staticus\Auth\AuthSessionMiddleware::class . ' will not work.', E_USER_NOTICE);
+        }
 
         return $sessionManager;
     }
