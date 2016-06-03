@@ -1,12 +1,16 @@
 <?php
 namespace Staticus\Resources\Commands;
+
 use League\Flysystem\Filesystem;
 use League\Flysystem\Memory\MemoryAdapter;
 use Staticus\Resources\File\ResourceDO;
 use Staticus\Resources\ResourceDOAbstract;
 
+require_once 'AddWrongFilesToDiskTrait.php';
+
 class FindResourceOptionsCommandTest extends \PHPUnit_Framework_TestCase
 {
+    use AddWrongFilesToDiskTrait;
     const BASE_DIR = '/this/is/a/test';
 
     /**
@@ -173,42 +177,5 @@ class FindResourceOptionsCommandTest extends \PHPUnit_Framework_TestCase
         return $resourceDO;
     }
 
-    /**
-     * Put bad files to the 'disk'
-     * @param $resourceDO
-     * @param $content
-     * @return string
-     */
-    protected function addWrongFilesToDisk(ResourceDO $resourceDO, $content)
-    {
-        $resourceDO = clone $resourceDO;
-        $resourceDO->setName('another');
-        $filePath = $resourceDO->getFilePath();
-        $this->filesystem->put($filePath, $content);
-        $this->assertTrue($this->filesystem->has($filePath));
 
-        $resourceDO = clone $resourceDO;
-        $resourceDO->setNameAlternative('another');
-        $filePath = $resourceDO->getFilePath();
-        $this->filesystem->put($filePath, $content);
-        $this->assertTrue($this->filesystem->has($filePath));
-
-        $resourceDO = clone $resourceDO;
-        $resourceDO->setBaseDirectory('another');
-        $filePath = $resourceDO->getFilePath();
-        $this->filesystem->put($filePath, $content);
-        $this->assertTrue($this->filesystem->has($filePath));
-
-        $resourceDO = clone $resourceDO;
-        $resourceDO->setNamespace('another');
-        $filePath = $resourceDO->getFilePath();
-        $this->filesystem->put($filePath, $content);
-        $this->assertTrue($this->filesystem->has($filePath));
-
-        $resourceDO = clone $resourceDO;
-        $resourceDO->setType('wrong-type');
-        $filePath = $resourceDO->getFilePath();
-        $this->filesystem->put($filePath, $content);
-        $this->assertTrue($this->filesystem->has($filePath));
-    }
 }

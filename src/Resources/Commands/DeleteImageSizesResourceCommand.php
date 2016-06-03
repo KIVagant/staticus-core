@@ -2,6 +2,7 @@
 namespace Staticus\Resources\Commands;
 
 use League\Flysystem\FilesystemInterface;
+use Staticus\Resources\Image\ResourceImageDO;
 use Staticus\Resources\Image\ResourceImageDOInterface;
 
 class DeleteImageSizesResourceCommand implements ResourceCommandInterface
@@ -28,17 +29,25 @@ class DeleteImageSizesResourceCommand implements ResourceCommandInterface
 
     protected function execute()
     {
-        $command = 'find '
-            . $this->resourceDO->getBaseDirectory()
-            . ($this->resourceDO->getNamespace() ? $this->resourceDO->getNamespace() . DIRECTORY_SEPARATOR : '')
-            . $this->resourceDO->getType() . DIRECTORY_SEPARATOR
-            . $this->resourceDO->getVariant() . DIRECTORY_SEPARATOR
-            . $this->resourceDO->getVersion() . DIRECTORY_SEPARATOR
-            . '*x*' . DIRECTORY_SEPARATOR // only non-zero image sizes
-            . ' -type f -name ' . $this->resourceDO->getUuid() . '.' . $this->resourceDO->getType();
-
-        $command .= ' -delete';
-        shell_exec($command . '> /dev/null 2>&1');
+        $command = new FindResourceOptionsCommand($this->resourceDO, $this->filesystem);
+        $result = $command([
+            ResourceImageDO::TOKEN_DIMENSION,
+        ]);
+        if (is_array($result) && $result) {
+            foreach ($result as $dimension) {
+                $dimension = array_key_exists(ResourceImageDO::TOKEN_DIMENSION, $dimension)
+                    ? $dimension[ResourceImageDO::TOKEN_DIMENSION]
+                    : '';
+                $dimension = explode('x', $dimension);
+                if ($dimension && 2 === count($dimension)) {
+                    $destroyDO = clone $this->resourceDO;
+                    $destroyDO->setWidth($dimension[0]);
+                    $destroyDO->setHeight($dimension[1]);
+                    $command = new DestroyResourceCommand($destroyDO, $this->filesystem);
+                    $command(true);
+                }
+            }
+        }
 
         return true;
     }
