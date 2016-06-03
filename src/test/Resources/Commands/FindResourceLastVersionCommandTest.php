@@ -55,6 +55,7 @@ class FindResourceLastVersionCommandTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Staticus\Resources\Exceptions\CommandErrorException
+     * @expectedExceptionMessage Can not look for options: resource is empty
      */
     public function testFindEmptyResourceVersion()
     {
