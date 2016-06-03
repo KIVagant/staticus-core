@@ -24,7 +24,7 @@ class CopyResourceCommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return BackupResourceCommand
+     * @return CopyResourceCommand
      */
     public function getCommand(ResourceDO $resourceDOSource, ResourceDO $resourceDODest)
     {

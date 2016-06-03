@@ -93,11 +93,12 @@ class AuthBasicMiddleware implements MiddlewareInterface
      */
     protected function isAdminAuthentication(ServerRequestInterface $request)
     {
+        $server = $request->getServerParams();
         return (
             (
-                isset($_SERVER['PHP_AUTH_USER'])
-                && isset($_SERVER['PHP_AUTH_PW'])
-                && $this->checkCredentials($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])
+                isset($server['PHP_AUTH_USER'])
+                && isset($server['PHP_AUTH_PW'])
+                && $this->checkCredentials($server['PHP_AUTH_USER'], $server['PHP_AUTH_PW'])
             )
             || $this->checkHeader($request->getHeaderLine('authorization'))
         );

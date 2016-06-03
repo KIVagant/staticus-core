@@ -178,6 +178,7 @@ class Redis implements SaveHandlerInterface
      * than $maxlifetime (in seconds)
      *
      * @param int $maxlifetime
+     * @return bool|void
      */
     public function gc($maxlifetime)
     {

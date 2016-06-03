@@ -52,7 +52,7 @@ abstract class ImagePostProcessingMiddlewareAbstract extends MiddlewareAbstract
     }
 
     /**
-     * @param $directory
+     * @param string $directory
      * @throws SaveResourceErrorException
      * @see \Staticus\Resources\Middlewares\SaveResourceMiddlewareAbstract::createDirectory
      */

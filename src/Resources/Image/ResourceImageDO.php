@@ -50,7 +50,7 @@ abstract class ResourceImageDO extends ResourceDOAbstract implements ResourceIma
     }
 
     /**
-     * @param mixed $width
+     * @param integer $width
      * @return ResourceImageDO
      */
     public function setWidth($width = self::DEFAULT_WIDTH)
@@ -70,7 +70,7 @@ abstract class ResourceImageDO extends ResourceDOAbstract implements ResourceIma
     }
 
     /**
-     * @param mixed $height
+     * @param integer $height
      * @return ResourceImageDO
      */
     public function setHeight($height = self::DEFAULT_HEIGHT)
@@ -117,7 +117,7 @@ abstract class ResourceImageDO extends ResourceDOAbstract implements ResourceIma
     }
 
     /**
-     * @return CropImageDOInterface|null
+     * @return CropImageDOInterface
      */
     public function getCrop()
     {

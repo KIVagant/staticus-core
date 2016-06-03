@@ -49,7 +49,7 @@ abstract class ActionGetAbstract extends MiddlewareAbstract
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @param string $filename Filename for saving dialog on the client-side
      * @param bool $forceSaveDialog
      * @return EmptyResponse

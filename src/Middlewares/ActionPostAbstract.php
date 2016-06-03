@@ -102,7 +102,7 @@ abstract class ActionPostAbstract extends MiddlewareAbstract
     }
 
     /**
-     * @return string|null
+     * @return UploadedFile|null
      */
     protected function upload()
     {
@@ -118,8 +118,8 @@ abstract class ActionPostAbstract extends MiddlewareAbstract
 
     /**
      * @param ResourceDOInterface $resourceDO
-     * @param $uri
-     * @return UploadedFile
+     * @param string $uri
+     * @return DownloadedFile
      * @throws ErrorException
      * @throws \Exception
      */

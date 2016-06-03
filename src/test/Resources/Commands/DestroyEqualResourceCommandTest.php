@@ -24,7 +24,7 @@ class DestroyEqualResourceCommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return BackupResourceCommand
+     * @return DestroyEqualResourceCommand
      */
     public function getCommand(ResourceDO $resourceDOOrigin, ResourceDO $resourceDOSuspect)
     {

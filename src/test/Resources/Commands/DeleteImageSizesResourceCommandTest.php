@@ -32,7 +32,7 @@ class DeleteImageSizesResourceCommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return BackupResourceCommand
+     * @return DeleteImageSizesResourceCommand
      */
     public function getCommand(ResourceImageDO $resourceDO)
     {

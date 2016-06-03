@@ -31,7 +31,7 @@ class DeleteSafetyResourceCommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return BackupResourceCommand
+     * @return DeleteSafetyResourceCommand
      */
     public function getCommand(ResourceDO $resourceDO)
     {

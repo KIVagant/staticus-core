@@ -31,7 +31,7 @@ class DestroyResourceCommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return BackupResourceCommand
+     * @return DestroyResourceCommand
      */
     public function getCommand(ResourceDO $resourceDO)
     {

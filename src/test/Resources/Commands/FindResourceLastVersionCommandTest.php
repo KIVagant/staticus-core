@@ -24,7 +24,7 @@ class FindResourceLastVersionCommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return BackupResourceCommand
+     * @return FindResourceLastVersionCommand
      */
     public function getCommand(ResourceDO $resourceDO)
     {
