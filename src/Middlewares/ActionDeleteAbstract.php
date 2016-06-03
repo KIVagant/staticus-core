@@ -14,7 +14,7 @@ use Staticus\Resources\File\ResourceDO;
 abstract class ActionDeleteAbstract extends MiddlewareAbstract
 {
     /**
-     * @var ResourceDO
+     * @var ResourceDOInterface|ResourceDO
      */
     protected $resourceDO;
     /**

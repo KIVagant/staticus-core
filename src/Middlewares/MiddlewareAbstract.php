@@ -25,7 +25,7 @@ abstract class MiddlewareAbstract implements MiddlewareInterface
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
      * @param callable|null $next
-     * @return EmptyResponse
+     * @return null|ResponseInterface
      * @throws \Exception
      */
     public function __invoke(

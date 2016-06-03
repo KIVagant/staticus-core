@@ -26,7 +26,7 @@ abstract class ActionPostAbstract extends MiddlewareAbstract
     protected $generator;
 
     /**
-     * @var ResourceDO
+     * @var ResourceDOInterface|ResourceDO
      */
     protected $resourceDO;
     /**
@@ -149,26 +149,32 @@ abstract class ActionPostAbstract extends MiddlewareAbstract
             "Cache-Control: no-cache",
             "Pragma: no-cache",
         ];
-        $ch = curl_init($uriEnc);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, static::CURL_TIMEOUT);
+        $curlHandle = curl_init($uriEnc);
+//        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curlHandle, CURLOPT_TIMEOUT, static::CURL_TIMEOUT);
         // Save curl result to the file
-        curl_setopt($ch, CURLOPT_FILE, $resource);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curlHandle, CURLOPT_FILE, $resource);
+        curl_setopt($curlHandle, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curlHandle, CURLOPT_FOLLOWLOCATION, true);
         // get curl response
-        curl_exec($ch);
-        if (curl_errno($ch)) {
-            curl_close($ch);
+        curl_exec($curlHandle);
+        if (curl_errno($curlHandle)) {
+            curl_close($curlHandle);
             fclose($resource);
-            throw new ErrorException('Curl error for uri: ' . $uri . '; ' . curl_error($ch));
+            throw new ErrorException('Curl error for uri: ' . $uri . '; ' . curl_error($curlHandle));
         }
-        $size = (int)curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
-        curl_close($ch);
+        $size = (int)curl_getinfo($curlHandle, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+        curl_close($curlHandle);
         fclose($resource);
         // ------------
 
-        $downloaded = new DownloadedFile($dir . $file, $size, UPLOAD_ERR_OK, $resourceDO->getName() . '.' . $resourceDO->getType(), $resourceDO->getMimeType());
+        $downloaded = new DownloadedFile(
+            $dir . $file
+            , $size
+            , UPLOAD_ERR_OK
+            , $resourceDO->getName() . '.' . $resourceDO->getType()
+            , $resourceDO->getMimeType()
+        );
 
         return $downloaded;
     }

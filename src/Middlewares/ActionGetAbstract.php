@@ -16,7 +16,7 @@ abstract class ActionGetAbstract extends MiddlewareAbstract
      */
     protected $generator;
     /**
-     * @var ResourceDO
+     * @var ResourceDOInterface|ResourceDO
      */
     protected $resourceDO;
     /**

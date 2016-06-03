@@ -54,7 +54,8 @@ class DestroyResourceCommand implements ResourceCommandInterface
                 }
                 if ($version !== ResourceDOInterface::DEFAULT_VERSION) {
                     if (
-                        $variant === $item[ResourceDOAbstract::TOKEN_VARIANT] // delete versions only for current variant
+                        // delete versions only for current variant
+                        $variant === $item[ResourceDOAbstract::TOKEN_VARIANT]
                         && $version === (int)$item[ResourceDOAbstract::TOKEN_VERSION]
                     ) {
                         $this->deleteFile($item['path']);

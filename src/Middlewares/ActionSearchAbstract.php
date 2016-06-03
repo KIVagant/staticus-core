@@ -11,7 +11,7 @@ use Zend\Diactoros\Response\JsonResponse;
 abstract class ActionSearchAbstract extends MiddlewareAbstract
 {
     /**
-     * @var ResourceDO
+     * @var ResourceDOInterface|ResourceDO
      */
     protected $resourceDO;
 

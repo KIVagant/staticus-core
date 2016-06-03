@@ -39,7 +39,11 @@ class DeleteSafetyResourceCommand implements ResourceCommandInterface
                 if (ResourceDOInterface::DEFAULT_VERSION !== $lastVersion) {
                     $lastVersionResourceDO = clone $this->resourceDO;
                     $lastVersionResourceDO->setVersion($lastVersion);
-                    $command = new DestroyEqualResourceCommand($lastVersionResourceDO, $this->resourceDO, $this->filesystem);
+                    $command = new DestroyEqualResourceCommand(
+                        $lastVersionResourceDO
+                        , $this->resourceDO
+                        , $this->filesystem
+                    );
                     $result = $command();
                     if ($result === $this->resourceDO) {
 

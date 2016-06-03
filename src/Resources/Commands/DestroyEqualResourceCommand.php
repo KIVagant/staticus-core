@@ -26,7 +26,11 @@ class DestroyEqualResourceCommand implements ResourceCommandInterface
      * @param ResourceDOInterface $suspectResourceDO This resource will be deleted, if it's equal to $originResourceDO
      * @param FilesystemInterface $filesystem
      */
-    public function __construct(ResourceDOInterface $originResourceDO, ResourceDOInterface $suspectResourceDO, FilesystemInterface $filesystem)
+    public function __construct(
+        ResourceDOInterface $originResourceDO
+        , ResourceDOInterface $suspectResourceDO
+        , FilesystemInterface $filesystem
+    )
     {
         $this->originResourceDO = $originResourceDO;
         $this->suspectResourceDO = $suspectResourceDO;

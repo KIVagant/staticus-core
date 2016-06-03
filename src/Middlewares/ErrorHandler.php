@@ -36,7 +36,11 @@ class ErrorHandler
                 $className = $className[0]['class'];
             }
             if ($error instanceof ResourceNotFoundException) {
-                $error = $this->getErrorArray($error->getMessage(), $this->getErrorCode($error, $className), $error->getResourceDO());
+                $error = $this->getErrorArray(
+                    $error->getMessage()
+                    , $this->getErrorCode($error, $className)
+                    , $error->getResourceDO()
+                );
 
                 return new NotFoundResponse($error);
             } else if ($error instanceof WrongRequestException) {
@@ -74,7 +78,7 @@ class ErrorHandler
     /**
      * @param string $message
      * @param integer $code
-     * @param ResourceDOInterface $resourceDO
+     * @param null|ResourceDOInterface $resourceDO
      * @return array
      */
     protected function getErrorArray($message, $code, ResourceDOInterface $resourceDO = null)

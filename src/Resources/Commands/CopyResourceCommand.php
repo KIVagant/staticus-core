@@ -21,7 +21,11 @@ class CopyResourceCommand implements ResourceCommandInterface
      */
     protected $filesystem;
 
-    public function __construct(ResourceDOInterface $originResourceDO, ResourceDOInterface $newResourceDO, FilesystemInterface $filesystem)
+    public function __construct(
+        ResourceDOInterface $originResourceDO
+        , ResourceDOInterface $newResourceDO
+        , FilesystemInterface $filesystem
+    )
     {
         $this->originResourceDO = $originResourceDO;
         $this->newResourceDO = $newResourceDO;
