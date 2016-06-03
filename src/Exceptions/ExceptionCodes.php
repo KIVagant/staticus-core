@@ -18,9 +18,14 @@ class ExceptionCodes
         \Staticus\Diactoros\Response\FileUploadedResponse::class,
         \Staticus\Middlewares\ActionGetAbstract::class,
 
+        \Staticus\Resources\Commands\BackupResourceCommand::class,
         \Staticus\Resources\Commands\CopyResourceCommand::class,
         \Staticus\Resources\Commands\DeleteSafetyResourceCommand::class,
+        \Staticus\Resources\Commands\DestroyEqualResourceCommand::class,
         \Staticus\Resources\Commands\DestroyResourceCommand::class,
+        \Staticus\Resources\Commands\FindResourceLastVersionCommand::class,
+        \Staticus\Resources\Commands\FindResourceOptionsCommand::class,
+        \Staticus\Resources\Commands\ShellFindImagesTrait::class,
 
         \Staticus\Resources\Gif\SaveResourceMiddleware::class,
         \Staticus\Resources\Jpg\SaveResourceMiddleware::class,
