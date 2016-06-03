@@ -20,7 +20,7 @@ class SessionManagerFactory
         $sessionConfig = new SessionConfig();
         $sessionConfig->setOptions($this->config['options']);
         $sessionManager = new SessionManager($sessionConfig);
-        if (class_exists('Redis')) {
+        if (class_exists(\Redis::class)) {
             $saveHandler  = new Redis(
                 $this->config['redis']['host'],
                 $this->config['redis']['port'],
