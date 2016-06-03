@@ -24,17 +24,13 @@ class DeleteSafetyResourceCommand implements ResourceCommandInterface
 
     public function __invoke()
     {
-        $uuid = $this->resourceDO->getUuid();
-        $type = $this->resourceDO->getType();
-        $variant = $this->resourceDO->getVariant();
         $version = $this->resourceDO->getVersion();
-        $baseDir = $this->resourceDO->getBaseDirectory();
-        $namespace = $this->resourceDO->getNamespace();
         $filePath = $this->resourceDO->getFilePath();
-        if (!$uuid || !$type || !$baseDir) {
-            throw new CommandErrorException('Invalid delete request');
+        if (!$this->resourceDO->getName() || !$this->resourceDO->getType() || !$this->resourceDO->getBaseDirectory()) {
+            throw new CommandErrorException('Cannot delete empty resource');
         }
-        if (is_file($filePath)) {
+        if ($this->filesystem->has($filePath)) {
+
             // Make backup of the default version
             if (ResourceDOInterface::DEFAULT_VERSION === $version) {
                 $lastVersion = $this->findLastVersion();
@@ -70,7 +66,7 @@ class DeleteSafetyResourceCommand implements ResourceCommandInterface
      */
     protected function deleteFile($filePath)
     {
-        if (!unlink($filePath)) {
+        if (!$this->filesystem->delete($filePath)) {
             throw new CommandErrorException('The file cannot be removed: ' . $filePath);
         }
     }
