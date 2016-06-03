@@ -1,11 +1,13 @@
 <?php
 namespace Staticus\Resources;
 
+use Zend\Permissions\Acl\Resource\ResourceInterface;
+
 /**
  * Default Recourse Domain Object Interface
  * @package Staticus\Resources\File
  */
-interface ResourceDOInterface
+interface ResourceDOInterface extends \Iterator, ResourceInterface
 {
     const DEFAULT_BASE_DIRECTORY = '';
     const DEFAULT_VARIANT = 'def';
@@ -160,4 +162,9 @@ interface ResourceDOInterface
      * @return ResourceDOInterface
      */
     public function setRecreate($recreate = false);
+
+    /**
+     * @return array
+     */
+    public function toArray();
 }

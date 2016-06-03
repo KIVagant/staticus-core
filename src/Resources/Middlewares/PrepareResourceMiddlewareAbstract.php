@@ -14,7 +14,7 @@ abstract class PrepareResourceMiddlewareAbstract extends MiddlewareAbstract
 {
     protected $resourceDO;
     /**
-     * @var Config
+     * @var ConfigInterface
      */
     protected $config;
 

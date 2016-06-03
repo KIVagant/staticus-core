@@ -33,19 +33,17 @@ class DeleteImageSizesResourceCommand implements ResourceCommandInterface
         $result = $command([
             ResourceImageDO::TOKEN_DIMENSION,
         ]);
-        if (is_array($result) && $result) {
-            foreach ($result as $dimension) {
-                $dimension = array_key_exists(ResourceImageDO::TOKEN_DIMENSION, $dimension)
-                    ? $dimension[ResourceImageDO::TOKEN_DIMENSION]
-                    : '';
-                $dimension = explode('x', $dimension);
-                if ($dimension && 2 === count($dimension)) {
-                    $destroyDO = clone $this->resourceDO;
-                    $destroyDO->setWidth($dimension[0]);
-                    $destroyDO->setHeight($dimension[1]);
-                    $command = new DestroyResourceCommand($destroyDO, $this->filesystem);
-                    $command(true);
-                }
+        foreach ($result as $dimension) {
+            $dimension = array_key_exists(ResourceImageDO::TOKEN_DIMENSION, $dimension)
+                ? $dimension[ResourceImageDO::TOKEN_DIMENSION]
+                : '';
+            $dimension = explode('x', $dimension);
+            if (false !== $dimension && 2 === count($dimension)) {
+                $destroyDO = clone $this->resourceDO;
+                $destroyDO->setWidth($dimension[0]);
+                $destroyDO->setHeight($dimension[1]);
+                $command = new DestroyResourceCommand($destroyDO, $this->filesystem);
+                $command(true);
             }
         }
 

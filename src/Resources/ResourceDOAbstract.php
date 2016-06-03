@@ -7,7 +7,7 @@ use Zend\Permissions\Acl\Resource\ResourceInterface;
  * Domain Object
  * @package Staticus\Resources\File
  */
-abstract class ResourceDOAbstract implements ResourceDOInterface, \Iterator, ResourceInterface
+abstract class ResourceDOAbstract implements ResourceDOInterface
 {
     const TYPE = '';
     const TOKEN_BASEDIRECTORY = 'basedirectory';
@@ -401,6 +401,9 @@ abstract class ResourceDOAbstract implements ResourceDOInterface, \Iterator, Res
         return isset($propsNames[$this->itemPosition]);
     }
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
         $ar = [];

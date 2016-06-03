@@ -7,7 +7,7 @@ use Staticus\Config\ConfigInterface;
 class LocalAdapterFactory
 {
     /**
-     * @var Config
+     * @var ConfigInterface
      */
     protected $config;
 

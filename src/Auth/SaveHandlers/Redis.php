@@ -58,7 +58,7 @@ class Redis implements SaveHandlerInterface
     {
         $this->sessionSavePath = $savePath;
         $this->sessionName = $name;
-        $this->lifetime = ini_get('session.gc_maxlifetime');
+        $this->lifetime = (int)ini_get('session.gc_maxlifetime');
     }
 
     /**

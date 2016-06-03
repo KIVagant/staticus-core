@@ -134,6 +134,9 @@ abstract class ResourceImageDO extends ResourceDOAbstract implements ResourceIma
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
         $data = parent::toArray();

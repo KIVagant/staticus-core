@@ -24,11 +24,6 @@ abstract class SaveResourceMiddlewareAbstract extends MiddlewareAbstract
     protected $resourceDO;
 
     /**
-     * Another type for nice IDE autocomplete in child classes
-     * @var FileContentResponse
-     */
-    protected $response;
-    /**
      * @var FilesystemInterface
      */
     protected $filesystem;

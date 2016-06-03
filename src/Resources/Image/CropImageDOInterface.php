@@ -48,5 +48,8 @@ interface CropImageDOInterface
      */
     public function setHeight($height);
 
+    /**
+     * @return array
+     */
     public function toArray();
 }

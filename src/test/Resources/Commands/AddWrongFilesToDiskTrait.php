@@ -6,6 +6,13 @@ use Staticus\Resources\ResourceDOInterface;
 trait AddWrongFilesToDiskTrait
 {
     /**
+     * @var \League\Flysystem\Filesystem
+     */
+    protected $filesystem;
+
+    abstract protected function assertTrue($condition, $message = '');
+
+    /**
      * Put bad files to the 'disk'
      * @param $resourceDO
      * @param $content
