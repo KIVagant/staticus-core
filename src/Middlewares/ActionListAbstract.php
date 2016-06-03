@@ -4,6 +4,7 @@ namespace Staticus\Middlewares;
 use League\Flysystem\FilesystemInterface;
 use Staticus\Exceptions\ResourceNotFoundException;
 use Staticus\Resources\Commands\FindResourceOptionsCommand;
+use Staticus\Resources\ResourceDOAbstract;
 use Staticus\Resources\ResourceDOInterface;
 use Zend\Diactoros\Response\EmptyResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -84,8 +85,8 @@ abstract class ActionListAbstract extends MiddlewareAbstract
         return [
             'size',
             'timestamp',
-            'variant',
-            'version',
+            ResourceDOAbstract::TOKEN_VARIANT,
+            ResourceDOAbstract::TOKEN_VERSION,
         ];
     }
 }

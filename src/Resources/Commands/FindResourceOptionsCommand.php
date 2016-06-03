@@ -71,6 +71,7 @@ class FindResourceOptionsCommand implements ResourceCommandInterface
             && array_key_exists('extension', $file)
             && $file['extension'] === $type
             && array_key_exists('type', $file)
+            // Warning: type field will be replaced by resource
             && $file['type'] === 'file'
 
                 ;

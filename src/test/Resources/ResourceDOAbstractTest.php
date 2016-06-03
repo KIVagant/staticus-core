@@ -255,13 +255,13 @@ class ResourceDOAbstractTest extends \PHPUnit_Framework_TestCase
         $resourceDO = $this->getResourceDO();
         $result = $resourceDO->getDirectoryTokens();
         $model = [
-            'basedirectory' => '',
-            'namespace' => '',
-            'type' => 'type/',
-            'shard_variant' => 'def/',
-            'variant' => 'def/',
-            'version' => '0/',
-            'shard_filename' => 'd41/',
+            ResourceDOAbstract::TOKEN_BASEDIRECTORY => '',
+            ResourceDOAbstract::TOKEN_NAMESPACE => '',
+            ResourceDOAbstract::TOKEN_TYPE => 'type/',
+            ResourceDOAbstract::TOKEN_SHARD_VARIANT => 'def/',
+            ResourceDOAbstract::TOKEN_VARIANT => 'def/',
+            ResourceDOAbstract::TOKEN_VERSION => '0/',
+            ResourceDOAbstract::TOKEN_SHARD_FILENAME => 'd41/',
         ];
         $this->assertEquals($model, $result);
     }
@@ -272,13 +272,13 @@ class ResourceDOAbstractTest extends \PHPUnit_Framework_TestCase
         $this->putTestValuesToResource($resourceDO);
         $result = $resourceDO->getDirectoryTokens();
         $model = [
-            'basedirectory' => 'testbasedir/',
-            'namespace' => 'testnamespace/',
-            'type' => 'testtype/',
-            'shard_variant' => 'tes/',
-            'variant' => 'testvariant/',
-            'version' => '2/',
-            'shard_filename' => '8a0/',
+            ResourceDOAbstract::TOKEN_BASEDIRECTORY => 'testbasedir/',
+            ResourceDOAbstract::TOKEN_NAMESPACE => 'testnamespace/',
+            ResourceDOAbstract::TOKEN_TYPE => 'testtype/',
+            ResourceDOAbstract::TOKEN_SHARD_VARIANT => 'tes/',
+            ResourceDOAbstract::TOKEN_VARIANT => 'testvariant/',
+            ResourceDOAbstract::TOKEN_VERSION => '2/',
+            ResourceDOAbstract::TOKEN_SHARD_FILENAME => '8a0/',
         ];
         $this->assertEquals($model, $result);
     }

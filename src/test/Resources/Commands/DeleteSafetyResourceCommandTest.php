@@ -146,7 +146,6 @@ class DeleteSafetyResourceCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($resourceDO, $result);
         $this->assertFalse($this->filesystem->has($resourceDO->getFilePath()));
         $result = $this->filesystem->listContents('/', true);
-        unset($result[32]['timestamp']);
         $this->assertEquals($model, $result);
     }
 
