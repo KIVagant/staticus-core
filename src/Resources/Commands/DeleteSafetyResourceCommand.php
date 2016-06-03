@@ -37,7 +37,7 @@ class DeleteSafetyResourceCommand implements ResourceCommandInterface
         if (is_file($filePath)) {
             // Make backup of the default version
             if (ResourceDOInterface::DEFAULT_VERSION === $version) {
-                $lastVersion = $this->findLastExistsVersion();
+                $lastVersion = $this->findLastVersion();
 
                 // But only if previous existing version is not the default and not has the same content as deleting
                 if (ResourceDOInterface::DEFAULT_VERSION !== $lastVersion) {
