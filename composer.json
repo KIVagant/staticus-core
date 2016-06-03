@@ -32,5 +32,8 @@
   },
   "require-dev": {
     "league/flysystem-memory": "^1.0"
+  },
+  "scripts": {
+    "test": "phpunit --testsuite StaticusCore"
   }
 }
