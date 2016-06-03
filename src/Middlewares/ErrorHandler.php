@@ -57,6 +57,13 @@ class ErrorHandler
             $next($request, $response, $next);
         }
     }
+
+    /**
+     * @param integer $status
+     * @param string $message
+     * @param integer $code
+     * @return JsonResponse
+     */
     protected function response($status, $message, $code)
     {
         $error = $this->getErrorArray($message, $code);
@@ -65,8 +72,8 @@ class ErrorHandler
     }
 
     /**
-     * @param $message
-     * @param $code
+     * @param string $message
+     * @param integer $code
      * @param ResourceDOInterface $resourceDO
      * @return array
      */
@@ -86,11 +93,11 @@ class ErrorHandler
     }
 
     /**
-     * @param $error
-     * @param $className
+     * @param \Exception $error
+     * @param string $className
      * @return string
      */
-    protected function getErrorCode($error, $className)
+    protected function getErrorCode(\Exception $error, $className)
     {
         return $error->getCode() . '.' . ExceptionCodes::code($className) . '.' . $error->getLine();
     }

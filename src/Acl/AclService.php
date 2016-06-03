@@ -66,7 +66,7 @@ class AclService implements AclServiceInterface
 
     /**
      * @param array $options
-     * @param mixed $option
+     * @param string $option
      * @param mixed $default
      * @return array
      */
