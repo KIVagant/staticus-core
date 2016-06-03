@@ -124,10 +124,12 @@ abstract class ResourceDOAbstract implements ResourceDOInterface
             self::TOKEN_BASEDIRECTORY => $this->getBaseDirectory(),
             self::TOKEN_NAMESPACE => ($this->getNamespace() ? $this->getNamespace() . DIRECTORY_SEPARATOR : ''),
             self::TOKEN_TYPE => $this->getType() . DIRECTORY_SEPARATOR,
-            self::TOKEN_SHARD_VARIANT => substr($this->getVariant(), 0, self::SHARD_SLICE_LENGTH) . DIRECTORY_SEPARATOR, // Sharding
+            // Sharding
+            self::TOKEN_SHARD_VARIANT => substr($this->getVariant(), 0, self::SHARD_SLICE_LENGTH) . DIRECTORY_SEPARATOR,
             self::TOKEN_VARIANT => $this->getVariant() . DIRECTORY_SEPARATOR,
             self::TOKEN_VERSION => $this->getVersion() . DIRECTORY_SEPARATOR,
-            self::TOKEN_SHARD_FILENAME => substr($this->getUuid(), 0, self::SHARD_SLICE_LENGTH) . DIRECTORY_SEPARATOR, // Sharding
+            // Sharding
+            self::TOKEN_SHARD_FILENAME => substr($this->getUuid(), 0, self::SHARD_SLICE_LENGTH) . DIRECTORY_SEPARATOR,
         ];
     }
 

@@ -150,7 +150,7 @@ abstract class ActionPostAbstract extends MiddlewareAbstract
             "Pragma: no-cache",
         ];
         $curlHandle = curl_init($uriEnc);
-//        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curlHandle, CURLOPT_TIMEOUT, static::CURL_TIMEOUT);
         // Save curl result to the file
         curl_setopt($curlHandle, CURLOPT_FILE, $resource);

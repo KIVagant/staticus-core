@@ -36,13 +36,23 @@ abstract class ImageResizeMiddlewareAbstract extends ImagePostProcessingMiddlewa
                     $this->resizeImage($path, $path, $this->resourceDO->getWidth(), $this->resourceDO->getHeight());
                 } else {
                     $modelResourceDO = $this->getResourceWithoutSizes();
-                    $this->resizeImage($modelResourceDO->getFilePath(), $path, $this->resourceDO->getWidth(), $this->resourceDO->getHeight());
+                    $this->resizeImage(
+                        $modelResourceDO->getFilePath()
+                        , $path
+                        , $this->resourceDO->getWidth()
+                        , $this->resourceDO->getHeight()
+                    );
                 }
 
             // (GET) Resource should be exist, just check if this size wasn't created before
             } else if (!$this->filesystem->has($path)) {
                 $modelResourceDO = $this->getResourceWithoutSizes();
-                $this->resizeImage($modelResourceDO->getFilePath(), $path, $this->resourceDO->getWidth(), $this->resourceDO->getHeight());
+                $this->resizeImage(
+                    $modelResourceDO->getFilePath()
+                    , $path
+                    , $this->resourceDO->getWidth()
+                    , $this->resourceDO->getHeight()
+                );
             }
         }
 

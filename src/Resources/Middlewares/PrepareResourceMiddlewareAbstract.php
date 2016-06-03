@@ -131,7 +131,8 @@ abstract class PrepareResourceMiddlewareAbstract extends MiddlewareAbstract
         return $str;
     }
 
-    protected function defaultValidator($name, $value, $canBeEmpty = false, $allowedRegexpSymbols = '\w\d\-_', $replaceDeniedSymbols = false)
+    protected function defaultValidator(
+        $name, $value, $canBeEmpty = false, $allowedRegexpSymbols = '\w\d\-_', $replaceDeniedSymbols = false)
     {
         if (!empty($value)) {
             if ($replaceDeniedSymbols) {

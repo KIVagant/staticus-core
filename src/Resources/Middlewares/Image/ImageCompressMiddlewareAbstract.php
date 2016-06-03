@@ -14,7 +14,11 @@ abstract class ImageCompressMiddlewareAbstract extends ImagePostProcessingMiddle
      */
     protected $config;
 
-    public function __construct(ResourceDOInterface $resourceDO, FilesystemInterface $filesystem, ConfigInterface $config)
+    public function __construct(
+        ResourceDOInterface $resourceDO
+        , FilesystemInterface $filesystem
+        , ConfigInterface $config
+    )
     {
         parent::__construct($resourceDO, $filesystem);
         $this->config = $config;
