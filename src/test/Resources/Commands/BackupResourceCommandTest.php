@@ -55,7 +55,7 @@ class BackupResourceCommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Staticus\Exceptions\ErrorException
+     * @expectedException \Staticus\Resources\Exceptions\CommandErrorException
      */
     public function testBackupEmptyResource()
     {
