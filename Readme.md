@@ -1,5 +1,9 @@
 # Staticus Core
 
+[![Build Status](https://scrutinizer-ci.com/g/KIVagant/staticus-core/badges/build.png)](https://scrutinizer-ci.com/g/KIVagant/staticus-core/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/KIVagant/staticus-core/badges/quality-score.png)](https://scrutinizer-ci.com/g/KIVagant/staticus-core/)
+[![Code Coverage](https://scrutinizer-ci.com/g/KIVagant/staticus-core/badges/coverage.png)](https://scrutinizer-ci.com/g/KIVagant/staticus-core/)
+
 This is a core-part of the [Staticus project](https://github.com/KIVagant/staticus).
 
 Look to the parent repository for more information.
