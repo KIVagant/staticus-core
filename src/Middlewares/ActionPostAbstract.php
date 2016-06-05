@@ -159,9 +159,10 @@ abstract class ActionPostAbstract extends MiddlewareAbstract
         // get curl response
         curl_exec($curlHandle);
         if (curl_errno($curlHandle)) {
+            $error = curl_error($curlHandle);
             curl_close($curlHandle);
             fclose($resource);
-            throw new ErrorException('Curl error for uri: ' . $uri . '; ' . curl_error($curlHandle));
+            throw new ErrorException('Curl error for uri: ' . $uri . '; ' . $error);
         }
         $size = (int)curl_getinfo($curlHandle, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
         curl_close($curlHandle);
