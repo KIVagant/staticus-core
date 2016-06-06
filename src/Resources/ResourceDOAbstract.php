@@ -1,8 +1,6 @@
 <?php
 namespace Staticus\Resources;
 
-use Zend\Permissions\Acl\Resource\ResourceInterface;
-
 /**
  * Domain Object
  * @package Staticus\Resources\File
@@ -22,7 +20,7 @@ abstract class ResourceDOAbstract implements ResourceDOInterface
     protected $uuid;
     protected $namespace = '';
     protected $name = '';
-    protected $nameAlternative = '';
+    protected $nameAlternative = self::DEFAULT_NAME_ALTERNATIVE;
     protected $type = self::TYPE;
     protected $variant = self::DEFAULT_VARIANT;
     protected $version = self::DEFAULT_VERSION;

@@ -15,6 +15,9 @@ abstract class ImageResponseMiddlewareAbstract extends ResourceResponseMiddlewar
         if (ResourceDOInterface::DEFAULT_VARIANT !== $resourceDO->getVariant()) {
             $query['var'] = $resourceDO->getVariant();
         }
+        if (ResourceDOInterface::DEFAULT_NAME_ALTERNATIVE !== $resourceDO->getNameAlternative()) {
+            $query['alt'] = $resourceDO->getNameAlternative();
+        }
         if (ResourceDOInterface::DEFAULT_VERSION !== $resourceDO->getVersion()) {
             $query['v'] = $resourceDO->getVersion();
         }

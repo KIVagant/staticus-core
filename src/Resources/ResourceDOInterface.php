@@ -10,6 +10,7 @@ use Zend\Permissions\Acl\Resource\ResourceInterface;
 interface ResourceDOInterface extends \Iterator, ResourceInterface
 {
     const DEFAULT_BASE_DIRECTORY = '';
+    const DEFAULT_NAME_ALTERNATIVE = '';
     const DEFAULT_VARIANT = 'def';
     const DEFAULT_VERSION = 0;
     const NAMESPACE_REG_SYMBOLS = '\w\d\-\'_\/';
