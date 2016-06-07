@@ -64,7 +64,7 @@ abstract class PrepareResourceMiddlewareAbstract extends MiddlewareAbstract
         $alt = $this->cleanup($alt);
         $var = static::getParamFromRequest('var', $this->request);
         $var = $this->cleanup($var);
-        $var = $this->defaultValidator('var', $var, true, '\w\d\-\._');
+        $var = $this->defaultValidator('var', $var, true, ResourceDOInterface::VARIANT_REG_SYMBOLS);
         $v = (int)static::getParamFromRequest('v', $this->request);
         $author = static::getParamFromRequest('author', $this->request);
         $author = $this->cleanup($author);

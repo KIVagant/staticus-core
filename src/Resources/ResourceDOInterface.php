@@ -14,6 +14,7 @@ interface ResourceDOInterface extends \Iterator, ResourceInterface
     const DEFAULT_VARIANT = 'def';
     const DEFAULT_VERSION = 0;
     const NAMESPACE_REG_SYMBOLS = '\w\d\-\'_\/';
+    const VARIANT_REG_SYMBOLS = '\w\d\-\._';
 
     // Wildcard for the common namespace for special ACL rules
     const NAMESPACES_WILDCARD = '/*';
