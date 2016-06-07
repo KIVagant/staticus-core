@@ -3,6 +3,7 @@ namespace Staticus\Resources\Middlewares;
 
 use League\Flysystem\FilesystemInterface;
 use Psr\Http\Message\UploadedFileInterface;
+use Staticus\Config\ConfigInterface;
 use Staticus\Exceptions\WrongRequestException;
 use Staticus\Diactoros\Response\FileUploadedResponse;
 use Staticus\Resources\Commands\BackupResourceCommand;
@@ -28,10 +29,20 @@ abstract class SaveResourceMiddlewareAbstract extends MiddlewareAbstract
      */
     protected $filesystem;
 
-    public function __construct(ResourceDOInterface $resourceDO, FilesystemInterface $filesystem)
+    /**
+     * @var ConfigInterface
+     */
+    protected $config;
+
+    public function __construct(
+        ResourceDOInterface $resourceDO,
+        FilesystemInterface $filesystem,
+        ConfigInterface $config
+    )
     {
         $this->resourceDO = $resourceDO;
         $this->filesystem = $filesystem;
+        $this->config = $config;
     }
 
     /**
@@ -67,7 +78,9 @@ abstract class SaveResourceMiddlewareAbstract extends MiddlewareAbstract
                 }
                 $this->save($resourceDO, $body);
             }
-            $this->copyFileToDefaults($resourceDO);
+            if ($this->config->get('staticus.magic_defaults.allow')) {
+                $this->copyFileToDefaults($resourceDO);
+            }
             $this->response = new EmptyResponse($response->getStatusCode(), [
                 'Content-Type' => $this->resourceDO->getMimeType(),
             ]);
@@ -131,13 +144,19 @@ abstract class SaveResourceMiddlewareAbstract extends MiddlewareAbstract
 
     protected function copyFileToDefaults(ResourceDOInterface $resourceDO)
     {
-        if (ResourceDO::DEFAULT_VARIANT !== $resourceDO->getVariant()) {
+        if (
+            ResourceDO::DEFAULT_VARIANT !== $resourceDO->getVariant()
+            && $this->config->get('staticus.magic_defaults.variant')
+        ) {
             $defaultDO = clone $resourceDO;
             $defaultDO->setVariant();
             $defaultDO->setVersion();
             $this->copyResource($resourceDO, $defaultDO);
         }
-        if (ResourceDO::DEFAULT_VERSION !== $resourceDO->getVersion()) {
+        if (
+            ResourceDO::DEFAULT_VERSION !== $resourceDO->getVersion()
+            && $this->config->get('staticus.magic_defaults.version')
+        ) {
             $defaultDO = clone $resourceDO;
             $defaultDO->setVersion();
             $this->copyResource($resourceDO, $defaultDO);

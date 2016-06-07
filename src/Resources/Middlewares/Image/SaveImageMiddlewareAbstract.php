@@ -13,7 +13,10 @@ abstract class SaveImageMiddlewareAbstract extends SaveResourceMiddlewareAbstrac
     protected function copyFileToDefaults(ResourceDOInterface $resourceDO)
     {
         /** @var ResourceImageDO $resourceDO */
-        if (ResourceDO::DEFAULT_VARIANT !== $resourceDO->getVariant()) {
+        if (
+            ResourceDO::DEFAULT_VARIANT !== $resourceDO->getVariant()
+            && $this->config->get('staticus.magic_defaults.variant')
+        ) {
             $defaultDO = clone $resourceDO;
             $defaultDO->setVariant();
             $defaultDO->setVersion();
@@ -21,14 +24,20 @@ abstract class SaveImageMiddlewareAbstract extends SaveResourceMiddlewareAbstrac
             $defaultDO->setHeight();
             $this->copyResource($resourceDO, $defaultDO);
         }
-        if (ResourceDO::DEFAULT_VERSION !== $resourceDO->getVersion()) {
+        if (
+            ResourceDO::DEFAULT_VERSION !== $resourceDO->getVersion()
+            && $this->config->get('staticus.magic_defaults.version')
+        ) {
             $defaultDO = clone $resourceDO;
             $defaultDO->setVersion();
             $defaultDO->setWidth();
             $defaultDO->setHeight();
             $this->copyResource($resourceDO, $defaultDO);
         }
-        if (ResourceImageDO::DEFAULT_DIMENSION !== $resourceDO->getDimension()) {
+        if (
+            ResourceImageDO::DEFAULT_DIMENSION !== $resourceDO->getDimension()
+            && $this->config->get('staticus.magic_defaults.dimension')
+        ) {
             $defaultDO = clone $resourceDO;
             $defaultDO->setWidth();
             $defaultDO->setHeight();

@@ -2,14 +2,15 @@
 namespace Staticus\Resources\Gif;
 
 use League\Flysystem\FilesystemInterface;
+use Staticus\Config\ConfigInterface;
 use Staticus\Resources\Exceptions\SaveResourceErrorException;
 use Staticus\Resources\Middlewares\Image\SaveImageMiddlewareAbstract;
 
 class SaveResourceMiddleware extends SaveImageMiddlewareAbstract
 {
-    public function __construct(ResourceDO $resourceDO, FilesystemInterface $filesystem)
+    public function __construct(ResourceDO $resourceDO, FilesystemInterface $filesystem, ConfigInterface $config)
     {
-        parent::__construct($resourceDO, $filesystem);
+        parent::__construct($resourceDO, $filesystem, $config);
     }
     protected function writeFile($filePath, $content)
     {
