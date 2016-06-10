@@ -43,6 +43,16 @@ abstract class PrepareResourceMiddlewareAbstract extends MiddlewareAbstract
     }
 
     /**
+     * Bugfix for the russian letters
+     * @param $file
+     * @return mixed
+     */
+    protected function mb_basename($file)
+    {
+        return end(explode('/', $file));
+    }
+
+    /**
      * @throws WrongRequestException
      * @todo: Write separate cleanup rules for each parameter
      */
@@ -51,7 +61,7 @@ abstract class PrepareResourceMiddlewareAbstract extends MiddlewareAbstract
         $name = static::getParamFromRequest('name', $this->request);
         $name = $this->cleanup($name);
         $namespace = dirname($name);
-        $name = basename($name);
+        $name = $this->mb_basename($name);
         $name = $this->defaultValidator('name', $name, false
             , ResourceDOInterface::NAME_REG_SYMBOLS, $this->config->get('staticus.clean_resource_name'));
         $namespace = $this->defaultValidator('namespace', $namespace, true
