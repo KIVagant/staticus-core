@@ -25,7 +25,6 @@ class ExceptionCodes
         \Staticus\Resources\Commands\DestroyResourceCommand::class,
         \Staticus\Resources\Commands\FindResourceLastVersionCommand::class,
         \Staticus\Resources\Commands\FindResourceOptionsCommand::class,
-        \Staticus\Resources\Commands\ShellFindImagesTrait::class,
 
         \Staticus\Resources\Gif\SaveResourceMiddleware::class,
         \Staticus\Resources\Jpg\SaveResourceMiddleware::class,
