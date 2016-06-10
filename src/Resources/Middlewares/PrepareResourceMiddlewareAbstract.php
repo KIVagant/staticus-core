@@ -49,7 +49,9 @@ abstract class PrepareResourceMiddlewareAbstract extends MiddlewareAbstract
      */
     protected function mb_basename($file)
     {
-        return end(explode('/', $file));
+        $file = explode('/', $file);
+
+        return end($file);
     }
 
     /**
