@@ -44,7 +44,7 @@ abstract class PrepareResourceMiddlewareAbstract extends MiddlewareAbstract
 
     /**
      * Bugfix for the russian letters
-     * @param $file
+     * @param string $file
      * @return mixed
      */
     protected function mb_basename($file)
@@ -108,6 +108,10 @@ abstract class PrepareResourceMiddlewareAbstract extends MiddlewareAbstract
     }
     abstract protected function fillResourceSpecialFields();
 
+    /**
+     * @param string $name
+     * @return string
+     */
     protected function cleanup($name)
     {
         $name = preg_replace('/\s+/u', ' ', trim(mb_strtolower(rawurldecode((string)$name), 'UTF-8')));
@@ -143,6 +147,15 @@ abstract class PrepareResourceMiddlewareAbstract extends MiddlewareAbstract
         return $str;
     }
 
+    /**
+     * @param string $name
+     * @param string $value
+     * @param bool $canBeEmpty
+     * @param string $allowedRegexpSymbols
+     * @param bool $replaceDeniedSymbols
+     * @return string
+     * @throws WrongRequestException
+     */
     protected function defaultValidator(
         $name, $value, $canBeEmpty = false, $allowedRegexpSymbols = '\w\d\-_', $replaceDeniedSymbols = false)
     {
@@ -163,6 +176,10 @@ abstract class PrepareResourceMiddlewareAbstract extends MiddlewareAbstract
         return $value;
     }
 
+    /**
+     * @param string $namespace
+     * @return bool
+     */
     protected function namespaceValidator($namespace)
     {
         $allowed = $this->config->get('staticus.namespaces');
