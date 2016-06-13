@@ -1,15 +1,21 @@
 <?php
 namespace Staticus\Middlewares;
 
+use Staticus\Acl\Roles;
+use Staticus\Resources\Middlewares\PrepareResourceMiddlewareAbstract;
 use Staticus\Resources\ResourceDOInterface;
 use Zend\Diactoros\Response\EmptyResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Staticus\Resources\File\ResourceDO;
 use Zend\Diactoros\Response\JsonResponse;
+use Staticus\Auth\UserInterface;
+use Staticus\Auth\User;
 
 abstract class ActionSearchAbstract extends MiddlewareAbstract
 {
+    const DEFAULT_CURSOR = 1;
+
     /**
      * @var ResourceDOInterface|ResourceDO
      */
@@ -21,11 +27,20 @@ abstract class ActionSearchAbstract extends MiddlewareAbstract
      */
     protected $searcher;
 
+    /**
+     * @var UserInterface|User
+     */
+    protected $user;
+
     public function __construct(
-        ResourceDOInterface $resourceDO, $generator)
+        ResourceDOInterface $resourceDO
+        , $generator
+        , UserInterface $user
+    )
     {
         $this->resourceDO = $resourceDO;
         $this->searcher = $generator;
+        $this->user = $user;
     }
 
     /**
@@ -47,12 +62,32 @@ abstract class ActionSearchAbstract extends MiddlewareAbstract
         return $this->next();
     }
 
-    abstract protected function search(ResourceDOInterface $resourceDO);
+    /**
+     * @return string
+     */
+    abstract protected function search();
+
+    abstract protected function getQuery();
 
     protected function action()
     {
-        $response = $this->search($this->resourceDO);
+        $response = $this->search();
 
         return new JsonResponse(['found' => $response]);
+    }
+
+    /**
+     * @return int
+     */
+    protected function getCursor()
+    {
+        $roles = $this->user->getRoles();
+        if (in_array(Roles::ADMIN, $roles, true)) {
+            $cursor = (int)PrepareResourceMiddlewareAbstract::getParamFromRequest('cursor', $this->request);
+
+            return $cursor;
+        }
+
+        return self::DEFAULT_CURSOR;
     }
 }
