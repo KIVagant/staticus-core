@@ -57,20 +57,16 @@ abstract class ActionListAbstract extends MiddlewareAbstract
 
     protected function action()
     {
-        $this->actionResult['resource'] = $this->findCurrentResource();
+        $this->actionResult['resource'] = $this->resourceDO->toArray();
+        $this->actionResult['exists'] = $this->isExist();
         $this->actionResult['options'] = $this->findOptions();
     }
 
-    protected function findCurrentResource()
+    protected function isExist()
     {
         $filePath = realpath($this->resourceDO->getFilePath());
-        if (!$this->filesystem->has($filePath)) {
 
-            throw new ResourceNotFoundException($this->resourceDO);
-        }
-        $current = $this->resourceDO->toArray();
-
-        return $current;
+        return $this->filesystem->has($filePath);
     }
 
     protected function findOptions()
