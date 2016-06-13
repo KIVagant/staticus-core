@@ -2,7 +2,6 @@
 namespace Staticus\Middlewares;
 
 use League\Flysystem\FilesystemInterface;
-use Staticus\Exceptions\ResourceNotFoundException;
 use Staticus\Resources\Commands\FindResourceOptionsCommand;
 use Staticus\Resources\ResourceDOAbstract;
 use Staticus\Resources\ResourceDOInterface;
@@ -60,7 +59,32 @@ abstract class ActionListAbstract extends MiddlewareAbstract
         $this->actionResult['resource'] = $this->resourceDO->toArray();
         $this->actionResult['exists'] = $this->isExist();
         $this->actionResult['options'] = $this->findOptions();
+        array_walk($this->actionResult['options'], [$this, 'addLinkToOption'], ['resourceDO' => $this->resourceDO]);
     }
+
+    protected function addLinkToOption(&$option, $key, $args)
+    {
+        /** @var ResourceDOInterface $resourceDO */
+        $resourceDO = $args['resourceDO'];
+        $query = [];
+        $namespace = array_key_exists(ResourceDO::TOKEN_NAMESPACE, $option)
+            ? '/' . $option[ResourceDO::TOKEN_NAMESPACE]
+            : '';
+        $link = $namespace . '/' . $resourceDO->getName() . '.' . $resourceDO->getType();
+        $alt = $resourceDO->getNameAlternative();
+        if ($alt) {
+            $query['alt'] = $alt;
+        }
+        foreach ($option as $token => $value) {
+            $query = $this->transformTokenToRoute($token, $value, $query);
+        }
+        $query = http_build_query($query);
+        if ($query) {
+            $link .= '?' . $query;
+        }
+        $option['link'] = $link;
+    }
+
 
     protected function isExist()
     {
@@ -84,5 +108,29 @@ abstract class ActionListAbstract extends MiddlewareAbstract
             ResourceDOAbstract::TOKEN_VARIANT,
             ResourceDOAbstract::TOKEN_VERSION,
         ];
+    }
+
+    /**
+     * @param string $token
+     * @param string $value
+     * @param array $query
+     * @return string
+     */
+    protected function transformTokenToRoute($token, $value, array $query)
+    {
+        switch ($token) {
+            case ResourceDO::TOKEN_VERSION:
+                if ((int)$value !== ResourceDO::DEFAULT_VERSION) {
+                    $query['v'] = $value;
+                }
+                break;
+            case ResourceDO::TOKEN_VARIANT:
+                if ((string)$value !== ResourceDO::DEFAULT_VARIANT) {
+                    $query['var'] = $value;
+                }
+                break;
+        }
+
+        return $query;
     }
 }
