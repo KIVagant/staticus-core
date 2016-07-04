@@ -150,12 +150,18 @@ abstract class ActionPostAbstract extends MiddlewareAbstract
             "Pragma: no-cache",
         ];
         $curlHandle = curl_init($uriEnc);
-        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
+        if (!$curlHandle) {
+            throw new ErrorException('Curl error for uri: ' . $uri . ': cannot create resource');
+        }
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curlHandle, CURLOPT_TIMEOUT, static::CURL_TIMEOUT);
         // Save curl result to the file
         curl_setopt($curlHandle, CURLOPT_FILE, $resource);
         curl_setopt($curlHandle, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($curlHandle, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curlHandle, CURLOPT_MAXREDIRS, 2);
+        curl_setopt($curlHandle, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, false);
         // get curl response
         curl_exec($curlHandle);
         if (curl_errno($curlHandle)) {
