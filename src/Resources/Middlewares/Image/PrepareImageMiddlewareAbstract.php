@@ -48,15 +48,6 @@ abstract class PrepareImageMiddlewareAbstract extends PrepareResourceMiddlewareA
                 );
             }
 
-            $resizeRatio = $resource->getWidth() / $resource->getHeight();
-            $cropRatio = $cropObject->getWidth() / $cropObject->getHeight();
-
-            if ($resizeRatio !== $cropRatio) {
-                throw new WrongRequestException(
-                    'Width to height ratio in crop parameter should be same as width to height ratio in size parameter'
-                );
-            }
-
             $resource->setCrop($cropObject);
         }
     }
