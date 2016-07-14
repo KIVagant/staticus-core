@@ -73,13 +73,14 @@ abstract class SaveResourceMiddlewareAbstract extends MiddlewareAbstract
                 $this->save($resourceDO, $resourceStream);
             } else {
                 $body = $response->getContent();
-                if (!$body) {
-                    throw new WrongResponseException('Empty body for generated file. Request: ' . $resourceDO->getName());
+
+                // If any previous middlewares have not created the resource content, just skip it.
+                // It is ok in some special cases like image resizing, when generator should not do anything,
+                // but next middlewares will create resource from original model.
+                if (null !== $body) {
+
+                    $this->save($resourceDO, $body);
                 }
-                $this->save($resourceDO, $body);
-            }
-            if ($this->config->get('staticus.magic_defaults.allow')) {
-                $this->copyFileToDefaults($resourceDO);
             }
             $this->response = new EmptyResponse($response->getStatusCode(), [
                 'Content-Type' => $this->resourceDO->getMimeType(),
@@ -199,7 +200,9 @@ abstract class SaveResourceMiddlewareAbstract extends MiddlewareAbstract
             // - or if the basic file is replaced and not equal to the previous version
             $this->afterSave($resourceDO);
         }
-
+        if ($this->config->get('staticus.magic_defaults.allow')) {
+            $this->copyFileToDefaults($resourceDO);
+        }
         return $resourceDO;
     }
     abstract protected function afterSave(ResourceDOInterface $resourceDO);
