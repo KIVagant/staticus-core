@@ -1,12 +1,29 @@
 <?php
 namespace Staticus\Resources\Middlewares\Image;
 
+use League\Flysystem\FilesystemInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Staticus\Config\ConfigInterface;
+use Staticus\Resources\ResourceDOInterface;
 use Zend\Expressive\Container\Exception\NotFoundException;
 
 abstract class ImageResizeMiddlewareAbstract extends ImagePostProcessingMiddlewareAbstract
 {
+    /**
+     * @var ConfigInterface
+     */
+    public $config;
+
+    public function __construct(
+        ResourceDOInterface $resourceDO
+        , FilesystemInterface $filesystem
+        , ConfigInterface $config
+    )
+    {
+        parent::__construct($resourceDO, $filesystem);
+        $this->config = $config;
+    }
 
     public function __invoke(
         ServerRequestInterface $request,
@@ -66,7 +83,11 @@ abstract class ImageResizeMiddlewareAbstract extends ImagePostProcessingMiddlewa
         }
         $this->createDirectory(dirname($destinationPath));
         $imagick = $this->getImagick($sourcePath);
-        $imagick->adaptiveResizeImage($width, $height, true);
+        if ($this->config->get('staticus.images.resize.autocrop', false)) {
+            $imagick->cropThumbnailImage($width, $height);
+        } else {
+            $imagick->adaptiveResizeImage($width, $height, true);
+        }
         $imagick->writeImage($destinationPath);
         $imagick->clear();
         $imagick->destroy();
