@@ -2,6 +2,7 @@
 namespace Staticus\Middlewares;
 
 use Staticus\Acl\Roles;
+use Staticus\Config\ConfigInterface;
 use Staticus\Resources\Middlewares\PrepareResourceMiddlewareAbstract;
 use Staticus\Resources\ResourceDOInterface;
 use Zend\Diactoros\Response\EmptyResponse;
@@ -32,15 +33,22 @@ abstract class ActionSearchAbstract extends MiddlewareAbstract
      */
     protected $user;
 
+    /**
+     * @var ConfigInterface
+     */
+    protected $config;
+
     public function __construct(
         ResourceDOInterface $resourceDO
         , $generator
         , UserInterface $user
+        , ConfigInterface $config
     )
     {
         $this->resourceDO = $resourceDO;
         $this->searcher = $generator;
         $this->user = $user;
+        $this->config = $config;
     }
 
     /**
@@ -81,8 +89,9 @@ abstract class ActionSearchAbstract extends MiddlewareAbstract
      */
     protected function getCursor()
     {
+        $allowCursor = $this->config->get('staticus.search.allow_cursor_for_users', false);
         $roles = $this->user->getRoles();
-        if (in_array(Roles::ADMIN, $roles, true)) {
+        if ($allowCursor || in_array(Roles::ADMIN, $roles, true)) {
             $cursor = (int)PrepareResourceMiddlewareAbstract::getParamFromRequest('cursor', $this->request);
 
             return $cursor;
