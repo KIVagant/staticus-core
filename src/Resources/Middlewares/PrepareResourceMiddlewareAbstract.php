@@ -80,7 +80,8 @@ abstract class PrepareResourceMiddlewareAbstract extends MiddlewareAbstract
         $v = (int)static::getParamFromRequest('v', $this->request);
         $author = static::getParamFromRequest('author', $this->request);
         $author = $this->cleanup($author);
-
+        $body = static::getParamFromPost('body', $this->request);
+        $body = $this->cleanupBody($body);
         $dataDir = $this->config->get('staticus.data_dir');
         /**
          * You shouldn't check 'recreate' and 'destroy' params here.
@@ -93,6 +94,7 @@ abstract class PrepareResourceMiddlewareAbstract extends MiddlewareAbstract
             ->setNamespace($namespace)
             ->setName($name)
             ->setNameAlternative($alt)
+            ->setBody($body)
             ->setVariant($var)
             ->setVersion($v)
             ->setAuthor($author);
@@ -121,6 +123,17 @@ abstract class PrepareResourceMiddlewareAbstract extends MiddlewareAbstract
     }
 
     /**
+     * @param string $text
+     * @return string
+     */
+    protected function cleanupBody($text)
+    {
+        $text = preg_replace('/\s+/u', ' ', trim((string)$text));
+
+        return $text;
+    }
+
+    /**
      * @param $name
      * @param ServerRequestInterface $request
      * @return string
@@ -143,6 +156,22 @@ abstract class PrepareResourceMiddlewareAbstract extends MiddlewareAbstract
                 ? $paramsGET[$name]
                 : ''
             );
+
+        return $str;
+    }
+
+    /**
+     * @param $name
+     * @param ServerRequestInterface $request
+     * @return string
+     */
+    public static function getParamFromPost($name, ServerRequestInterface $request)
+    {
+        $paramsPOST = (array)$request->getParsedBody();
+
+        $str = isset($paramsPOST[$name])
+            ? $paramsPOST[$name]
+            : '';
 
         return $str;
     }

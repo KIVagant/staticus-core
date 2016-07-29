@@ -21,6 +21,15 @@ abstract class ResourceDOAbstract implements ResourceDOInterface
     protected $namespace = '';
     protected $name = '';
     protected $nameAlternative = self::DEFAULT_NAME_ALTERNATIVE;
+
+    /**
+     * The body of resource that can be passed through HTTP POST Body while creation for some resources types
+     * For example, the body can be used as a full text than need to use for resource creation
+     * when it can't be sent in URI and does need to change URI at all (instead of 'alt' argument)
+     * The body MUST NOT change the UUID, but body changing can initialise uuid
+     * @var string
+     */
+    protected $body = '';
     protected $type = self::TYPE;
     protected $variant = self::DEFAULT_VARIANT;
     protected $version = self::DEFAULT_VERSION;
@@ -200,6 +209,27 @@ abstract class ResourceDOAbstract implements ResourceDOInterface
     public function setNameAlternative($nameAlternative = '')
     {
         $this->nameAlternative = (string)$nameAlternative;
+        $this->setUuid();
+        $this->setFilePath();
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBody()
+    {
+        return $this->body;
+    }
+
+    /**
+     * @param string $body
+     * @return ResourceDOInterface
+     */
+    public function setBody($body = '')
+    {
+        $this->body = (string)$body;
         $this->setUuid();
         $this->setFilePath();
 

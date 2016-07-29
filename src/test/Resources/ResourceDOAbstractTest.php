@@ -296,6 +296,7 @@ class ResourceDOAbstractTest extends \PHPUnit_Framework_TestCase
             'uuid' => '',
             'variant' => 'def',
             'version' => 0,
+            'body' => '',
         ];
         $result = $resourceDO->toArray();
         $this->assertEquals($model, $result);
@@ -314,6 +315,7 @@ class ResourceDOAbstractTest extends \PHPUnit_Framework_TestCase
             'uuid' => '8a0e2c505add6e3d1f83fd23f3a381a8',
             'variant' => 'testvariant',
             'version' => 2,
+            'body' => '',
         ];
         $this->putTestValuesToResource($resourceDO);
         $result = $resourceDO->toArray();

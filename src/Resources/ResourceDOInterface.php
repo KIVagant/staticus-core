@@ -71,6 +71,17 @@ interface ResourceDOInterface extends \Iterator, ResourceInterface
     /**
      * @return string
      */
+    public function getBody();
+
+    /**
+     * @param string $body
+     * @return ResourceDOInterface
+     */
+    public function setBody($body);
+
+    /**
+     * @return string
+     */
     public function getType();
 
     /**

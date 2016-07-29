@@ -149,6 +149,7 @@ class ResourceDOTest extends \PHPUnit_Framework_TestCase
             'height' => 0,
             'width' => 0,
             'dimension' => 0,
+            'body' => '',
         ];
         $result = $resourceDO->toArray();
         $this->assertEquals($model, $result);
@@ -171,6 +172,7 @@ class ResourceDOTest extends \PHPUnit_Framework_TestCase
             'width' => 2,
             'dimension' => '2x3',
             'crop' => null,
+            'body' => '',
         ];
         $this->putTestValuesToResource($resourceDO);
         $result = $resourceDO->toArray();
