@@ -78,7 +78,7 @@ abstract class ActionListAbstract extends MiddlewareAbstract
         foreach ($option as $token => $value) {
             $query = $this->transformTokenToRoute($token, $value, $query);
         }
-        $query = http_build_query($query, null, null, PHP_QUERY_RFC3986); // RFC for correct spaces
+        $query = http_build_query($query, null, '&', PHP_QUERY_RFC3986); // RFC for correct spaces
         if ($query) {
             $link .= '?' . $query;
         }

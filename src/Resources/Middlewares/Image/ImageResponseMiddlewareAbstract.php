@@ -24,7 +24,7 @@ abstract class ImageResponseMiddlewareAbstract extends ResourceResponseMiddlewar
         if (ResourceImageDO::DEFAULT_DIMENSION !== $resourceDO->getDimension()) {
             $query['size'] = $resourceDO->getDimension();
         }
-        $query = http_build_query($query, null, null, PHP_QUERY_RFC3986); // RFC for correct spaces
+        $query = http_build_query($query, null, '&', PHP_QUERY_RFC3986); // RFC for correct spaces
         if ($query) {
             $uri .= '?' . $query;
         }

@@ -72,7 +72,7 @@ abstract class ResourceResponseMiddlewareAbstract extends MiddlewareAbstract
         if (ResourceDOInterface::DEFAULT_VERSION !== $resourceDO->getVersion()) {
             $query['v'] = $resourceDO->getVersion();
         }
-        $query = http_build_query($query, null, null, PHP_QUERY_RFC3986); // RFC for correct spaces
+        $query = http_build_query($query, null, '&', PHP_QUERY_RFC3986); // RFC for correct spaces
         if ($query) {
             $uri .= '?' . $query;
         }
