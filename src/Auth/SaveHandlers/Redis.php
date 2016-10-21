@@ -50,15 +50,16 @@ class Redis implements SaveHandlerInterface
 
     /**
      * Open Session - retrieve resources
-     *
      * @param string $savePath
      * @param string $name
+     * @return bool
      */
     public function open($savePath, $name)
     {
         $this->sessionSavePath = $savePath;
         $this->sessionName = $name;
         $this->lifetime = (int)ini_get('session.gc_maxlifetime');
+        return true;
     }
 
     /**
@@ -68,6 +69,7 @@ class Redis implements SaveHandlerInterface
     public function close()
     {
         $this->redis->close();
+        return true;
     }
 
     /**
@@ -93,13 +95,13 @@ class Redis implements SaveHandlerInterface
 
     /**
      * Write Session - commit data to resource
-     *
      * @param string $identifier
-     * @param mixed $data
+     * @param mixed  $data
+     * @return bool
      */
     public function write($identifier, $data)
     {
-        $this->redis->setex(
+        return $this->redis->setex(
             $this->getSessionKey($identifier),
             $this->lifetime,
             $data
