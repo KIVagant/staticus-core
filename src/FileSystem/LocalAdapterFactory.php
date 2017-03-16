@@ -1,5 +1,6 @@
 <?php
 namespace Staticus\FileSystem;
+
 use League\Flysystem\Adapter\Local;
 use Staticus\Config\ConfigInterface;
 
@@ -15,9 +16,13 @@ class LocalAdapterFactory
     {
         $this->config = $config;
     }
+
     public function __invoke()
     {
-        $adapter = new Local($this->config->get('filesystem.adapters.' . Local::class . '.options.root'));
+        $adapter = new Local(
+            $this->config->get('filesystem.adapters.' . Local::class . '.options.root'),
+            $this->config->get('filesystem.adapters.' . Local::class . '.options.writeFlags')
+        );
 
         return $adapter;
     }
