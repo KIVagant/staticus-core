@@ -80,7 +80,8 @@ class Redis implements SaveHandlerInterface
      */
     public function read($identifier)
     {
-        return $this->redis->get($this->getSessionKey($identifier));
+        $result = $this->redis->get($this->getSessionKey($identifier));
+        return $result === false ? 'empty' : $result;
     }
 
     /**
