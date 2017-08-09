@@ -128,7 +128,7 @@ abstract class ActionPostAbstract extends MiddlewareAbstract
         // ------------
         // @todo refactoring: move downloading code from here to separate service!
         // ------------
-        set_time_limit(self::CURL_TIMEOUT);
+        // set_time_limit(self::CURL_TIMEOUT);
         $dir = DATA_DIR . 'download' . DIRECTORY_SEPARATOR;
         $file = $this->resourceDO->getUuid() . '_' . time() . '_' . mt_rand(100, 200) . '.tmp';
         if(!@mkdir($dir) && !is_dir($dir)) {
